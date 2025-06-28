@@ -10,6 +10,12 @@ pkgs.mkShell {
     cargo-tauri # Optional, Only needed if Tauri doesn't work through the traditional way.
     nodejs # Optional, this is for if you have a js frontend
     bun
+    rustc
+    rust-analyzer
+    cargo-tauri
+    rustfmt
+    libappindicator-gtk3
+
   ];
 
   buildInputs = with pkgs; [
