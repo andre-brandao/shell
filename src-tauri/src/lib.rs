@@ -1,12 +1,14 @@
-mod hyprland_commands;
-mod hyprland_events;
+mod hypr;
 
 use gtk::prelude::{ContainerExt, GtkWindowExt, WidgetExt};
 use gtk_layer_shell::LayerShell;
-use hyprland_commands::*;
-use hyprland_events::HyprlandEvents;
-use tauri::Manager;
-// use tauri::{AppHandle, Emitter};
+
+use hypr::commands::*;
+use hypr::events::HyprlandEvents;
+// use std::collections::HashMap;
+// use tauri::Manager;
+// // use tauri::{AppHandle, Emitter};
+
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
 fn greet(name: &str) -> String {
@@ -17,6 +19,11 @@ fn greet(name: &str) -> String {
 
 use gdk::{traits::MonitorExt, Display, Monitor};
 
+// Simple struct to store GTK windows by monitor
+// struct AppState {
+//     monitor_windows: HashMap<String, gtk::ApplicationWindow>,
+// }
+
 fn create_window(app: tauri::AppHandle, label: &str) -> tauri::WebviewWindow {
     let webview_window =
         tauri::WebviewWindowBuilder::new(&app, label, tauri::WebviewUrl::App("/".into()))
@@ -24,8 +31,10 @@ fn create_window(app: tauri::AppHandle, label: &str) -> tauri::WebviewWindow {
             .unwrap();
     return webview_window;
 }
-
-fn create_bar(app: tauri::AppHandle, monitor: gdk::Monitor) {
+fn create_bar(
+    app: tauri::AppHandle,
+    monitor: gdk::Monitor,
+) -> (gtk::ApplicationWindow, tauri::WebviewWindow) {
     let webview_window = create_window(app, "main");
     webview_window.hide().unwrap();
     // Set the monitor for the webview window
@@ -42,7 +51,8 @@ fn create_bar(app: tauri::AppHandle, monitor: gdk::Monitor) {
     gtk_window.set_layer(gtk_layer_shell::Layer::Top);
     // gtk_window.set_keyboard_mode(gtk_layer_shell::KeyboardMode::Exclusive); // to allow keyboard input
     gtk_window.set_height_request(30);
-    gtk_window.set_exclusive_zone(30);
+    // gtk_window.set_exclusive_zone(30);
+    gtk_window.auto_exclusive_zone_enable();
     gtk_window.set_margin(0);
     // gtk_window.set_position(gtk::WindowPosition::Mouse);
 
@@ -52,6 +62,8 @@ fn create_bar(app: tauri::AppHandle, monitor: gdk::Monitor) {
     gtk_window.set_anchor(gtk_layer_shell::Edge::Right, true);
 
     gtk_window.show_all();
+
+    return (gtk_window, webview_window);
 }
 
 pub fn run() {
@@ -63,13 +75,21 @@ pub fn run() {
             change_workspace,
         ])
         .setup(|app| {
-            let monitors = app.available_monitors().unwrap();
+            // let monitors = app.available_monitors().unwrap();
             let display = Display::default().unwrap();
             for i in 0..display.n_monitors() {
                 let monitor = display.monitor(i).unwrap();
                 println!("Monitor {}: {:?}", i, monitor);
                 create_bar(app.handle().clone(), monitor);
             }
+
+            // display.connect_monitor_added(|_, monitor| {
+            //     println!("Monitor added: {:?}", monitor);
+            //     create_bar(app.handle().clone(), *monitor);
+            // });
+            // display.connect_monitor_removed(|_, monitor| {
+            //     println!("Monitor removed: {:?}", *monitor);
+            // });
             HyprlandEvents::init_event_listener(app.handle().clone());
 
             Ok(())
