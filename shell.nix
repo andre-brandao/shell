@@ -15,7 +15,7 @@ pkgs.mkShell {
     cargo-tauri
     rustfmt
     libappindicator-gtk3
-
+    gtk-layer-shell
   ];
 
   buildInputs = with pkgs; [
