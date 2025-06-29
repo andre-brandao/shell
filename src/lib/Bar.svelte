@@ -7,9 +7,7 @@
 
 <main class="container">
   <div class="section left">
-    <div class="widget">
-      <Workspaces />
-    </div>
+    <Workspaces />
     <!-- Add more left widgets here -->
     <div class="widget">
       <ActiveClient />
@@ -25,7 +23,7 @@
 
   <div class="section right">
     <div class="widget">
-      <ActiveClient />
+      <!-- <ActiveClient /> -->
     </div>
     <!-- Add more right widgets here -->
   </div>

@@ -34,14 +34,18 @@
           .catch(console.error)}
     >
       {workspace}
-      {#if workspace === activeWorkspace}
-        esse
-      {/if}
     </button>
   {/each}
 </div>
 
 <style>
+  button {
+    /* remove default styles */
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
   .workspaces-container {
     display: flex;
     align-items: center;
@@ -59,7 +63,7 @@
     border-radius: 3px;
     cursor: pointer;
     font-size: 12px;
-    background-color: #444;
+    /* background-color: #444; */
     transition: all 0.2s ease;
   }
 
@@ -71,6 +75,7 @@
     background-color: #666;
     font-weight: bold;
     color: #fff;
+    width: 32px;
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
   }
 </style>

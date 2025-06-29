@@ -3401,6 +3401,7 @@ dependencies = [
 name = "shell"
 version = "0.1.0"
 dependencies = [
+ "gdk",
  "gtk",
  "gtk-layer-shell",
  "hyprland",
