@@ -1,7 +1,12 @@
+mod hyprland_commands;
+mod hyprland_events;
+
 use gtk::prelude::{ContainerExt, GtkWindowExt, WidgetExt};
 use gtk_layer_shell::LayerShell;
+use hyprland_commands::*;
+use hyprland_events::HyprlandEvents;
 use tauri::Manager;
-
+// use tauri::{AppHandle, Emitter};
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
 fn greet(name: &str) -> String {
@@ -11,7 +16,11 @@ fn greet(name: &str) -> String {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_os::init())
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![
+            greet,
+            // Hyprland data commands
+            change_workspace,
+        ])
         .setup(|app| {
             let main_window = app.get_webview_window("main").unwrap();
             main_window.hide().unwrap();
@@ -31,9 +40,7 @@ pub fn run() {
 
             // Just works.
             gtk_window.set_layer(gtk_layer_shell::Layer::Top);
-            // set exclusive layer shell mode
             // gtk_window.set_keyboard_mode(gtk_layer_shell::KeyboardMode::Exclusive); // to allow keyboard input
-            // gtk_window.set_width_request(640);
             gtk_window.set_height_request(30);
             gtk_window.set_exclusive_zone(30);
             gtk_window.set_margin(0);
@@ -45,17 +52,10 @@ pub fn run() {
             gtk_window.set_anchor(gtk_layer_shell::Edge::Right, true);
             gtk_window.show_all();
 
+            HyprlandEvents::init_event_listener(app.handle().clone());
+
             Ok(())
         })
         .run(tauri::generate_context!())
         .unwrap()
 }
-
-// #[cfg_attr(mobile, tauri::mobile_entry_point)]
-// pub fn run() {
-//     tauri::Builder::default()
-//         .plugin(tauri_plugin_opener::init())
-//         .invoke_handler(tauri::generate_handler![greet])
-//         .run(tauri::generate_context!())
-//         .expect("error while running tauri application");
-// }
