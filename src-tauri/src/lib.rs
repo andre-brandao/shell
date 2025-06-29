@@ -75,7 +75,8 @@ pub fn run() {
             greet,
             // Hyprland data commands
             change_workspace,
-            get_battery_sys
+            get_battery_sys,
+            get_system_info,
         ])
         .setup(|app| {
             // let monitors = app.available_monitors().unwrap();

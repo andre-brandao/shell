@@ -1,7 +1,8 @@
-use hyprland::data::{Monitor, Monitors, Workspace, Workspaces};
+// use hyprland::data::{Monitor, Monitors, Workspace, Workspaces};
 use hyprland::event_listener::EventListener;
-use hyprland::shared::{HyprData, WorkspaceType};
-use serde::{Deserialize, Serialize};
+// use hyprland::shared::{HyprData, WorkspaceType};
+// use serde::{Deserialize, Serialize};
+use serde_json::{json, Value};
 use std::thread;
 use tauri::{AppHandle, Emitter};
 
@@ -44,7 +45,7 @@ impl HyprlandEvents {
             println!("{data:#?}");
             // if some window emit class and title in a json
             if let Some(window) = data {
-                let json_data = serde_json::json!({
+                let json_data = json!({
                     "class": window.class,
                     "title": window.title,
                 });
@@ -72,7 +73,7 @@ impl HyprlandEvents {
         event_listener.add_active_monitor_changed_handler(move |state| {
             println!("Monitor state: {state:#?}");
 
-            let json_data = serde_json::json!({
+            let json_data = json!({
                 "monitor_name": state.monitor_name,
                 "workspace_name": state.workspace_name,
             });

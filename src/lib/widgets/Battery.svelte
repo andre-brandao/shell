@@ -17,11 +17,7 @@
     let timeOutId: number | null = null;
     getBat();
     timeOutId = setTimeout(getBat, 10000);
-    return () => {
-      if (timeOutId) {
-        clearTimeout(timeOutId);
-      }
-    };
+    return () => clearTimeout(timeOutId);
   });
 </script>
 
