@@ -1,6 +1,6 @@
 use hyprland::dispatch;
-use hyprland::dispatch::{DispatchType, WindowIdentifier, WorkspaceIdentifierWithSpecial};
-use serde::Serialize;
+use hyprland::dispatch::{DispatchType, WorkspaceIdentifierWithSpecial};
+// use hyprland::data::{Monitor, Monitors, Workspace, Workspaces};
 
 // Workspace management
 #[tauri::command]

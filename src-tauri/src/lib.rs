@@ -9,22 +9,13 @@ use hypr::events::HyprlandEvents;
 use os::stats::*;
 // use std::collections::HashMap;
 // use tauri::Manager;
-// // use tauri::{AppHandle, Emitter};
+// use tauri::{AppHandle, Emitter};
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
-
-// use gtk::Button;
-
-use gdk::{Display, Monitor};
-
-// Simple struct to store GTK windows by monitor
-// struct AppState {
-//     monitor_windows: HashMap<String, gtk::ApplicationWindow>,
-// }
 
 fn create_window(app: tauri::AppHandle, label: &str) -> tauri::WebviewWindow {
     let webview_window =
@@ -77,10 +68,11 @@ pub fn run() {
             change_workspace,
             get_battery_sys,
             get_system_info,
+            get_disk_info,
         ])
         .setup(|app| {
             // let monitors = app.available_monitors().unwrap();
-            let display = Display::default().unwrap();
+            let display = gdk::Display::default().unwrap();
             for i in 0..display.n_monitors() {
                 let monitor = display.monitor(i).unwrap();
                 println!("Monitor {}: {:?}", i, monitor);

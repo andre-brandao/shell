@@ -1,32 +1,36 @@
 use serde_json::{json, Value};
 use std::fs;
 
-use sysinfo::System;
+use sysinfo::{Disks, System};
 
 #[tauri::command]
 pub fn get_system_info() -> Option<Value> {
     let mut sys = System::new_all();
     sys.refresh_all();
-
-    // Return None if we can't get basic system info
-    if sys.cpus().is_empty() {
-        return None;
-    }
-
     // CPU usage
-    let cpu_usage: f32 =
-        sys.cpus().iter().map(|cpu| cpu.cpu_usage()).sum::<f32>() / sys.cpus().len() as f32;
-
-    // Memory usage
-    let total_memory = sys.total_memory();
-    let used_memory = sys.used_memory();
-
-    // Return None if memory info is invalid
-    if total_memory == 0 {
-        return None;
-    }
-
-    let memory_usage = (used_memory as f64 / total_memory as f64) * 100.0;
+    let cpu_usage: f32 = {
+        let mut total_usage: f32 = 0.0;
+        if sys.cpus().is_empty() {
+            total_usage;
+        }
+        for cpu in sys.cpus() {
+            total_usage += cpu.cpu_usage();
+        }
+        if sys.cpus().len() > 0 {
+            total_usage / sys.cpus().len() as f32
+        } else {
+            0.0 // Handle the case where there are no CPUs
+        }
+    };
+    let memory_usage: f64 = {
+        let total_memory = sys.total_memory();
+        let used_memory = sys.used_memory();
+        if total_memory == 0 {
+            return None;
+        } else {
+            (used_memory as f64 / total_memory as f64) * 100.0
+        }
+    };
 
     Some(json!({
           "cpu_usage": cpu_usage,
@@ -35,6 +39,22 @@ pub fn get_system_info() -> Option<Value> {
           // "used_memory":used_memory,
       }
     ))
+}
+
+#[tauri::command]
+pub fn get_disk_info() -> Option<Value> {
+    let disks = Disks::new_with_refreshed_list();
+    let mut disk_info = Vec::new();
+    for disk in disks.list() {
+        disk_info.push(json!({
+            "name": format!("{:?}", disk.name()),
+            "total_space": disk.total_space(),
+            "available_space": disk.available_space(),
+            "type": format!("{:?}", disk.kind()),
+            "mount_point": format!("{:?}", disk.mount_point()),
+        }));
+    }
+    Some(json!(disk_info))
 }
 
 #[tauri::command]

@@ -5,6 +5,7 @@
   import ActiveClient from "./widgets/ActiveClient.svelte";
   import Battery from "./widgets/Battery.svelte";
   import SysInfo from "./widgets/SysInfo.svelte";
+  import Disks from "./widgets/Disks.svelte";
 </script>
 
 <main class="container">
@@ -27,6 +28,7 @@
     <div class="widget">
       <!-- <ActiveClient /> -->
       <SysInfo />
+      <Disks />
       <Battery />
     </div>
     <!-- Add more right widgets here -->

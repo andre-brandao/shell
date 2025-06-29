@@ -1,8 +1,5 @@
-// use hyprland::data::{Monitor, Monitors, Workspace, Workspaces};
 use hyprland::event_listener::EventListener;
-// use hyprland::shared::{HyprData, WorkspaceType};
-// use serde::{Deserialize, Serialize};
-use serde_json::{json, Value};
+use serde_json::json;
 use std::thread;
 use tauri::{AppHandle, Emitter};
 
