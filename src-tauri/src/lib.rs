@@ -1,10 +1,12 @@
 mod hypr;
+mod os;
 
 use gtk::prelude::{ContainerExt, GtkWindowExt, WidgetExt};
 use gtk_layer_shell::LayerShell;
 
 use hypr::commands::*;
 use hypr::events::HyprlandEvents;
+use os::stats::*;
 // use std::collections::HashMap;
 // use tauri::Manager;
 // // use tauri::{AppHandle, Emitter};
@@ -17,7 +19,7 @@ fn greet(name: &str) -> String {
 
 // use gtk::Button;
 
-use gdk::{traits::MonitorExt, Display, Monitor};
+use gdk::{Display, Monitor};
 
 // Simple struct to store GTK windows by monitor
 // struct AppState {
@@ -73,6 +75,7 @@ pub fn run() {
             greet,
             // Hyprland data commands
             change_workspace,
+            get_battery_sys
         ])
         .setup(|app| {
             // let monitors = app.available_monitors().unwrap();
