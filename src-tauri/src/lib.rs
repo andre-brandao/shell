@@ -17,9 +17,9 @@ fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
 
-fn create_window(app: tauri::AppHandle, label: &str) -> tauri::WebviewWindow {
+fn create_window(app: tauri::AppHandle, label: &str, path: &str) -> tauri::WebviewWindow {
     let webview_window =
-        tauri::WebviewWindowBuilder::new(&app, label, tauri::WebviewUrl::App("/".into()))
+        tauri::WebviewWindowBuilder::new(&app, label, tauri::WebviewUrl::App(path.into()))
             .build()
             .unwrap();
     return webview_window;
@@ -28,7 +28,7 @@ fn create_bar(
     app: tauri::AppHandle,
     monitor: gdk::Monitor,
 ) -> (gtk::ApplicationWindow, tauri::WebviewWindow) {
-    let webview_window = create_window(app, "main");
+    let webview_window = create_window(app, "main", "/");
     webview_window.hide().unwrap();
     // Set the monitor for the webview window
     let gtk_window =
@@ -59,6 +59,36 @@ fn create_bar(
     return (gtk_window, webview_window);
 }
 
+fn create_launcher(app: tauri::AppHandle) -> (gtk::ApplicationWindow, tauri::WebviewWindow) {
+    let webview_window = create_window(app, "launcher", "/launcher");
+    webview_window.hide().unwrap();
+    // Set the monitor for the webview window
+    let gtk_window =
+        gtk::ApplicationWindow::new(&webview_window.gtk_window().unwrap().application().unwrap());
+    gtk_window.set_app_paintable(true);
+    let vbox = webview_window.default_vbox().unwrap();
+    webview_window.gtk_window().unwrap().remove(&vbox);
+    gtk_window.add(&vbox);
+    gtk_window.init_layer_shell();
+
+    // gtk_window.set_monitor(&monitor);
+    gtk_window.set_layer(gtk_layer_shell::Layer::Top);
+    // gtk_window.set_keyboard_mode(gtk_layer_shell::KeyboardMode::Exclusive); // to allow keyboard input
+    gtk_window.set_keyboard_interactivity(true);
+    gtk_window.set_height_request(640);
+    gtk_window.set_width_request(640);
+    gtk_window.set_margin(0);
+    gtk_window.set_position(gtk::WindowPosition::Center);
+
+    // set anchor top left and right
+    // gtk_window.set_anchor(gtk_layer_shell::IsA::);
+    // gtk_window.set_anchor(gtk_layer_shell::Edge::Left, true);
+    // gtk_window.set_anchor(gtk_layer_shell::Edge::Right, true);
+
+    gtk_window.show_all();
+
+    return (gtk_window, webview_window);
+}
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_os::init())
@@ -72,13 +102,12 @@ pub fn run() {
         ])
         .setup(|app| {
             // let monitors = app.available_monitors().unwrap();
-            let display = gdk::Display::default().unwrap();
-            for i in 0..display.n_monitors() {
-                let monitor = display.monitor(i).unwrap();
-                println!("Monitor {}: {:?}", i, monitor);
-                create_bar(app.handle().clone(), monitor);
-            }
-
+            // let display = gdk::Display::default().unwrap();
+            // for i in 0..display.n_monitors() {
+            //     let monitor = display.monitor(i).unwrap();
+            //     println!("Monitor {}: {:?}", i, monitor);
+            //     create_bar(app.handle().clone(), monitor);
+            // }
             // display.connect_monitor_added(|_, monitor| {
             //     println!("Monitor added: {:?}", monitor);
             //     create_bar(app.handle().clone(), *monitor);
@@ -86,7 +115,11 @@ pub fn run() {
             // display.connect_monitor_removed(|_, monitor| {
             //     println!("Monitor removed: {:?}", *monitor);
             // });
+
+            let (_, launcher_window) = create_launcher(app.handle().clone());
             HyprlandEvents::init_event_listener(app.handle().clone());
+
+            //
 
             Ok(())
         })
