@@ -6,17 +6,73 @@ use gtk_layer_shell::{Edge, KeyboardMode, Layer, LayerShell};
 
 use hypr::commands::*;
 use hypr::events::HyprlandEvents;
+use os::apps::*;
 use os::stats::*;
+
 // use std::collections::HashMap;
 // use tauri::Manager;
 // use tauri::{AppHandle, Emitter};
 // use tauri_plugin_global_shortcut::{Code, GlobalShortcutExt, Modifiers, Shortcut, ShortcutState};
 
 use tauri::{menu::MenuBuilder, Manager};
+
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
+}
+
+#[tauri::command]
+fn toggle_launcher(app_handle: tauri::AppHandle) {
+    let window = get_launcher(&app_handle);
+
+    match window.is_visible() {
+        Ok(true) => window.hide().unwrap(),
+        Ok(false) => window.show().unwrap(),
+        Err(e) => println!("Error checking visibility: {}", e),
+    }
+}
+
+pub fn run() {
+    tauri::Builder::default()
+        .plugin(tauri_plugin_os::init())
+        .invoke_handler(tauri::generate_handler![
+            greet,
+            // Hyprland data commands
+            change_workspace,
+            get_battery_sys,
+            get_system_info,
+            get_disk_info,
+            get_apps,
+            get_running_apps,
+            toggle_launcher,
+        ])
+        .setup(|app| {
+            let display = gdk::Display::default().unwrap();
+            let monitor = display.monitor(1).unwrap();
+            println!("Monitor {}: {:?}", 1, monitor);
+            create_bar(app.handle().clone(), monitor);
+            // for i in 0..display.n_monitors() {
+            //     let monitor = display.monitor(i).unwrap();
+            //     println!("Monitor {}: {:?}", i, monitor);
+            //     create_bar(app.handle().clone(), monitor);
+            // }
+            // display.connect_monitor_added(|_, monitor| {
+            //     println!("Monitor added: {:?}", monitor);
+            //     create_bar(app.handle().clone(), *monitor);
+            // });
+            // display.connect_monitor_removed(|_, monitor| {
+            //     println!("Monitor removed: {:?}", *monitor);
+            // });
+
+            create_launcher(app.handle().clone());
+
+            HyprlandEvents::init_event_listener(app.handle().clone());
+
+            Ok(())
+        })
+        .run(tauri::generate_context!())
+        .unwrap()
 }
 
 fn create_window(app: tauri::AppHandle, label: &str, path: &str) -> tauri::WebviewWindow {
@@ -137,51 +193,4 @@ fn get_launcher(app_handle: &tauri::AppHandle) -> tauri::WebviewWindow {
         .get_webview_window("launcher")
         .expect("launcher window not found");
     return launcher;
-}
-#[tauri::command]
-fn toggle_launcher(app_handle: tauri::AppHandle) {
-    let window = get_launcher(&app_handle);
-
-    match window.is_visible() {
-        Ok(true) => window.hide().unwrap(),
-        Ok(false) => window.show().unwrap(),
-        Err(e) => println!("Error checking visibility: {}", e),
-    }
-}
-
-pub fn run() {
-    tauri::Builder::default()
-        .plugin(tauri_plugin_os::init())
-        .invoke_handler(tauri::generate_handler![
-            greet,
-            // Hyprland data commands
-            change_workspace,
-            get_battery_sys,
-            get_system_info,
-            get_disk_info,
-            toggle_launcher,
-        ])
-        .setup(|app| {
-            let display = gdk::Display::default().unwrap();
-            for i in 0..display.n_monitors() {
-                let monitor = display.monitor(i).unwrap();
-                println!("Monitor {}: {:?}", i, monitor);
-                create_bar(app.handle().clone(), monitor);
-            }
-            // display.connect_monitor_added(|_, monitor| {
-            //     println!("Monitor added: {:?}", monitor);
-            //     create_bar(app.handle().clone(), *monitor);
-            // });
-            // display.connect_monitor_removed(|_, monitor| {
-            //     println!("Monitor removed: {:?}", *monitor);
-            // });
-
-            create_launcher(app.handle().clone());
-
-            HyprlandEvents::init_event_listener(app.handle().clone());
-
-            Ok(())
-        })
-        .run(tauri::generate_context!())
-        .unwrap()
 }

@@ -29,7 +29,7 @@ impl HyprlandEvents {
     // Register handler for workspace changes
     fn register_workspace_handler(event_listener: &mut EventListener, app_handle: AppHandle) {
         event_listener.add_workspace_changed_handler(move |workspace_event| {
-            println!("Workspace changed: {workspace_event:?}");
+            // println!("Workspace changed: {workspace_event:?}");
             app_handle
                 .emit("workspace-changed", workspace_event.id)
                 .unwrap();
@@ -39,7 +39,7 @@ impl HyprlandEvents {
     // Register handler for active window changes
     fn register_active_window_handler(event_listener: &mut EventListener, app_handle: AppHandle) {
         event_listener.add_active_window_changed_handler(move |data| {
-            println!("{data:#?}");
+            // println!("{data:#?}");
             // if some window emit class and title in a json
             if let Some(window) = data {
                 let json_data = json!({
@@ -58,7 +58,7 @@ impl HyprlandEvents {
     // Register handler for fullscreen state changes
     fn register_fullscreen_handler(event_listener: &mut EventListener, app_handle: AppHandle) {
         event_listener.add_fullscreen_state_changed_handler(move |fstate| {
-            println!("Window {} fullscreen", if fstate { "is" } else { "is not" });
+            // println!("Window {} fullscreen", if fstate { "is" } else { "is not" });
 
             // Emit fullscreen state event
             app_handle.emit("fullscreen-changed", fstate).unwrap();
