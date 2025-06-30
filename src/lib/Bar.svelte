@@ -6,10 +6,12 @@
   import Battery from "./widgets/Battery.svelte";
   import SysInfo from "./widgets/SysInfo.svelte";
   import Disks from "./widgets/Disks.svelte";
+  import Icon from "./widgets/Icon.svelte";
 </script>
 
 <main class="container">
   <div class="section left">
+    <Icon />
     <Workspaces />
     <!-- Add more left widgets here -->
     <div class="widget">

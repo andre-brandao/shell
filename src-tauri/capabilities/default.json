@@ -3,12 +3,15 @@
   "identifier": "default",
   "description": "Capability for the main window",
   "windows": [
-    "main"
+    "main",
+    "launcher",
+    "bar"
   ],
   "permissions": [
     "core:default",
     "opener:default",
     "os:default",
-    "os:default"
+    "core:window:allow-hide",
+    "core:window:allow-set-always-on-top"
   ]
 }
