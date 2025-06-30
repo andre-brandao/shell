@@ -1,66 +1,7 @@
-mod hypr;
-mod os;
-mod setup;
-
 use gtk::prelude::{ContainerExt, GtkWindowExt, WidgetExt};
 use gtk_layer_shell::{Edge, KeyboardMode, Layer, LayerShell};
 
-use hypr::commands::*;
-use hypr::events::HyprlandEvents;
-use os::apps::*;
-use os::stats::*;
-
-// use std::collections::HashMap;
-// use tauri::Manager;
-// use tauri::{AppHandle, Emitter};
-// use tauri_plugin_global_shortcut::{Code, GlobalShortcutExt, Modifiers, Shortcut, ShortcutState};
-
-use tauri::{menu::MenuBuilder, Manager};
-
-// Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
-#[tauri::command]
-fn toggle_launcher(app_handle: tauri::AppHandle) {
-    let window = app_handle
-        .get_webview_window("launcher")
-        .expect("launcher window not found");
-
-    match window.is_visible() {
-        Ok(true) => window.hide().unwrap(),
-        Ok(false) => window.show().unwrap(),
-        Err(e) => println!("Error checking visibility: {}", e),
-    }
-}
-
-pub fn run() {
-    tauri::Builder::default()
-        .plugin(tauri_plugin_os::init())
-        .invoke_handler(tauri::generate_handler![
-            greet,
-            // Hyprland data commands
-            change_workspace,
-            get_battery_sys,
-            get_system_info,
-            get_disk_info,
-            get_apps,
-            get_running_apps,
-            toggle_launcher,
-        ])
-        .setup(|app| {
-            setup::bar::setup_bar(app.handle().clone());
-            setup::launcher::setup_launcher(app.handle().clone());
-            setup::hyprland::listen_events(app.handle().clone());
-            Ok(())
-        })
-        .run(tauri::generate_context!())
-        .unwrap()
-}
-
-fn create_launcher(app: tauri::AppHandle) {
+pub fn setup_launcher(app: tauri::AppHandle) {
     // let webview_window = create_window(app, "launcher", "/launcher");
     let webview_window = tauri::WebviewWindowBuilder::new(
         &app,

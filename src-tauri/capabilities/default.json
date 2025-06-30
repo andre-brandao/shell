@@ -5,7 +5,8 @@
   "windows": [
     "main",
     "launcher",
-    "bar"
+    "bar_1",
+    "bar_2"
   ],
   "permissions": [
     "core:default",
