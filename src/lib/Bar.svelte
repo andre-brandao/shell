@@ -12,6 +12,8 @@
 <main class="container">
   <div class="section left">
     <Icon />
+    <SysInfo />
+    <Disks />
     <Workspaces />
     <!-- Add more left widgets here -->
     <div class="widget">
@@ -29,8 +31,7 @@
   <div class="section right">
     <div class="widget">
       <!-- <ActiveClient /> -->
-      <SysInfo />
-      <Disks />
+
       <Battery />
     </div>
     <!-- Add more right widgets here -->
