@@ -1,6 +1,7 @@
 {
   "name": "shell",
   "version": "0.1.0",
+  "module": "",
   "description": "",
   "type": "module",
   "scripts": {
