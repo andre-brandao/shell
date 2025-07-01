@@ -10,7 +10,7 @@
   }
 </script>
 
-<div
+<button
   class="icon-widget"
   aria-label="Toggle Launcher"
   onclick={() => {
@@ -18,13 +18,12 @@
   }}
 >
   <span class="icon">  </span>
-</div>
+</button>
 
 <style>
   .icon-widget {
     display: flex;
     align-items: center;
-    cursor: pointer;
   }
 
   .icon {
