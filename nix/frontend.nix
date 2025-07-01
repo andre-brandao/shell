@@ -3,11 +3,11 @@
   ...
 }:
 mkBunDerivation {
-  src = ./.;
+  src = ../.;
 
   bunNix = ./bun.nix;
 
-  packageJson = ./package.json;
+  packageJson = ../package.json;
 
   buildPhase = ''
     # echo "Custom build phase for frontend"

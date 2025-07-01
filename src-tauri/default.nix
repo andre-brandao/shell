@@ -61,7 +61,7 @@ rustPlatform.buildRustPackage {
     mkdir -p frontend-build
     cp -R ${frontend-build}/* frontend-build/
 
-    substituteInPlace ./tauri.conf.json --replace '"frontendDist": "../build"' '"distDir": "frontend-build"'
+    substituteInPlace ./tauri.conf.json --replace '"frontendDist": "../build"' '"frontendDist": "frontend-build"'
   '';
 
   checkFlags = [

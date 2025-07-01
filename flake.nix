@@ -1,12 +1,11 @@
 {
-  description = "Tauri development environment";
+  description = "Deds Shell - A Svelte and Tauri Linux Shell";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     bun2nix.url = "github:baileyluTCD/bun2nix";
     bun2nix.inputs.nixpkgs.follows = "nixpkgs";
-
   };
   nixConfig = {
       extra-substituters = [
@@ -19,19 +18,16 @@
       ];
   };
 
-
   outputs = { self, nixpkgs, flake-utils, ... }@inputs:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        frontend-build = pkgs.callPackage ./frontend.nix {  inherit (inputs.bun2nix.lib.${system}) mkBunDerivation;};
+        frontend-build = pkgs.callPackage ./nix/frontend.nix {  inherit (inputs.bun2nix.lib.${system}) mkBunDerivation;};
       in
       {
-        packages.default = pkgs.callPackage ./build.nix { inherit (inputs.bun2nix.lib.${system}) mkBunDerivation;};
-        packages.frontend= pkgs.callPackage ./frontend.nix {  inherit (inputs.bun2nix.lib.${system}) mkBunDerivation;};
-        packages.teste = pkgs.callPackage ./src-tauri/default.nix {
-          inherit frontend-build;
-        };
+        packages.default = pkgs.callPackage ./src-tauri/default.nix {inherit frontend-build;};
+        packages.frontend= frontend-build;
+
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = with pkgs; [
             pkg-config
@@ -41,7 +37,6 @@
             nodejs # Optional, this is for if you have a js frontend
             bun
             inputs.bun2nix.packages.${system}.default
-
             rustc
             rust-analyzer
             cargo-tauri
@@ -63,7 +58,10 @@
             webkitgtk_4_1
             openssl
           ];
-          # shellHook = "";
+          shellHook = ''
+            echo "Welcome to the Deds Shell development environment!"
+            echo "You can run 'bun run tauri dev' to start the development."
+          '';
         };
       });
 }
