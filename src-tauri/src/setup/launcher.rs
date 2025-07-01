@@ -6,7 +6,7 @@ pub fn setup_launcher(app: tauri::AppHandle) {
     let webview_window = tauri::WebviewWindowBuilder::new(
         &app,
         "launcher",
-        tauri::WebviewUrl::App("/launcher".into()),
+        tauri::WebviewUrl::App("/splashscreen".into()),
     )
     .title("DedsLauncher")
     .window_classname("deds_launcher")

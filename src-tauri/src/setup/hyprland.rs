@@ -3,7 +3,7 @@ use serde_json::json;
 use std::thread;
 use tauri::{AppHandle, Emitter};
 
-pub fn listen_events(app: AppHandle) {
+pub async fn listen_events(app: AppHandle) {
     thread::spawn(move || {
         let mut event_listener = EventListener::new();
 
