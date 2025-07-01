@@ -62,7 +62,7 @@ fn register_fullscreen_handler(event_listener: &mut EventListener, app_handle: A
 // Register handler for active monitor changes
 fn register_active_monitor_handler(event_listener: &mut EventListener, app_handle: AppHandle) {
     event_listener.add_active_monitor_changed_handler(move |state| {
-        println!("Monitor state: {state:#?}");
+        // println!("Monitor state: {state:#?}");
 
         let json_data = json!({
             "monitor_name": state.monitor_name,

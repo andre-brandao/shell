@@ -15,26 +15,21 @@
     <SysInfo />
     <Disks />
     <Workspaces />
-    <!-- Add more left widgets here -->
-    <div class="widget">
-      <ActiveClient />
-    </div>
+    <div class="widget"></div>
   </div>
 
   <div class="section center">
     <div class="widget">
       <Clock />
     </div>
-    <!-- Add more center widgets here -->
   </div>
 
   <div class="section right">
     <div class="widget">
-      <!-- <ActiveClient /> -->
+      <ActiveClient />
 
       <Battery />
     </div>
-    <!-- Add more right widgets here -->
   </div>
 </main>
 

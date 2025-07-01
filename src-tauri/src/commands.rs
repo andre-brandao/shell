@@ -1,5 +1,5 @@
 use serde_json::{json, Value};
-use tauri::{menu::MenuBuilder, Manager};
+use tauri::Manager;
 
 #[tauri::command]
 pub fn toggle_launcher(app_handle: tauri::AppHandle) {
@@ -69,7 +69,7 @@ pub fn get_apps() -> Option<Value> {
     ctx.refresh_apps().unwrap(); // must refresh apps before getting them
 
     let apps = ctx.get_all_apps();
-    println!("Apps: {:#?}", apps);
+    // println!("Apps: {:#?}", apps);
 
     let apps_json: Value = json!(apps
         .iter()
@@ -95,7 +95,7 @@ pub fn get_running_apps() -> Option<Value> {
     ctx.refresh_apps().unwrap(); // must refresh apps before getting them
 
     let running_apps = ctx.get_running_apps();
-    println!("Running Apps: {:#?}", running_apps);
+    // println!("Running Apps: {:#?}", running_apps);
 
     // map to json
     let apps_json: Value = json!(running_apps
@@ -124,9 +124,9 @@ pub fn get_system_info() -> Option<Value> {
     // CPU usage
     let cpu_usage: f32 = {
         let mut total_usage: f32 = 0.0;
-        if sys.cpus().is_empty() {
-            total_usage;
-        }
+        // if sys.cpus().is_empty() {
+        //     total_usage;
+        // }
         for cpu in sys.cpus() {
             total_usage += cpu.cpu_usage();
         }
