@@ -1,44 +1,33 @@
 <script lang="ts">
+  import { workspace } from "$lib/state/workspaces.svelte";
   import { invoke } from "@tauri-apps/api/core";
   import { listen, type UnlistenFn, type Event } from "@tauri-apps/api/event";
   import { onDestroy, onMount } from "svelte";
 
   let workspaces = $state<number[]>(new Array(10).fill(0).map((_, i) => i + 1));
-  let activeWorkspace = $state<number | null>(null);
-
-  let unlisten: UnlistenFn;
-
-  function handler(e: Event<number>) {
-    console.log("workspace-changed", e);
-    const workspaceId = e.payload;
-    console.log("workspaceId", workspaceId);
-    activeWorkspace = workspaceId;
-  }
-
-  onMount(async () => {
-    unlisten = await listen<number>("workspace-changed", handler);
-  });
-  onDestroy(() => {
-    unlisten();
-  });
 </script>
 
 <div class="workspaces-widget">
-  {#each workspaces as workspace, i (workspace)}
-    <div
+  {#each workspaces as w, i (w)}
+    {@const isActive = workspace.activeWorkpace.id === w}
+    <button
       class="workspace"
-      class:active={workspace === activeWorkspace}
-      onclick={() =>
-        invoke("change_workspace", { workspace })
-          .then(console.log)
-          .catch(console.error)}
+      class:active={isActive}
+      onclick={() => workspace.changeWorkspace(i)}
     >
-      {workspace}
-    </div>
+      {isActive ? "_" : w}
+    </button>
   {/each}
 </div>
 
 <style>
+  button {
+    border: none;
+    padding: 0;
+    background: none;
+    cursor: pointer;
+    outline: none;
+  }
   .workspaces-widget {
     display: flex;
     gap: 4px;

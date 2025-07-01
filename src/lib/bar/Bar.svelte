@@ -4,7 +4,7 @@
   import Hostname from "./widgets/Hostname.svelte";
   import ActiveClient from "./widgets/ActiveClient.svelte";
   import Battery from "./widgets/Battery.svelte";
-  import SysInfo from "./widgets/SysInfo.svelte";
+  import SysInfo from "./widgets/SysInfoIcon.svelte";
   import Disks from "./widgets/Disks.svelte";
   import Icon from "./widgets/Icon.svelte";
 </script>

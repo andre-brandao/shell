@@ -3,7 +3,7 @@ use serde_json::json;
 use std::thread;
 use tauri::{AppHandle, Emitter};
 
-pub async fn listen_events(app: AppHandle) {
+pub fn listen_events(app: AppHandle) {
     thread::spawn(move || {
         let mut event_listener = EventListener::new();
 
@@ -23,9 +23,15 @@ pub async fn listen_events(app: AppHandle) {
 // Register handler for workspace changes
 fn register_workspace_handler(event_listener: &mut EventListener, app_handle: AppHandle) {
     event_listener.add_workspace_changed_handler(move |workspace_event| {
-        // println!("Workspace changed: {workspace_event:?}");
+        // println!("{workspace_event:#?}");
         app_handle
-            .emit("workspace-changed", workspace_event.id)
+            .emit(
+                "workspace-changed",
+                json!({
+                    "name": workspace_event.name,
+                    "id": workspace_event.id,
+                }),
+            )
             .unwrap();
     });
 }

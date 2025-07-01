@@ -12,14 +12,9 @@
     unlisten = await listen<{ class: string; title: string } | null>(
       "active-window-changed",
       (e) => {
-        console.log("active-window-changed", e);
-        if (!e.payload) {
-          activeClient = { title: "", class: "" };
-          return;
-        }
         activeClient = {
-          title: e.payload.title,
-          class: e.payload.class,
+          title: e.payload?.title ?? "",
+          class: e.payload?.class ?? "",
         };
       },
     );

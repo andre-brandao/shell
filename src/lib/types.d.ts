@@ -4,3 +4,26 @@ type LinuxApp = {
   app_path_exe: string;
   app_desktop: string;
 };
+
+type ActiveClient = {
+  class: string;
+  title: string;
+}
+
+type Workspaces = {
+  id: number;
+  name: string;
+}
+
+type SysInfo = {
+  cpu_usage: number;
+  ram_usage: number;
+}
+
+type Disk = {
+  name: string;
+  total_space: number;
+  available_space: number;
+  type: string;
+  mount_pont: string;
+}

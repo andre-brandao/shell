@@ -1,9 +1,9 @@
-use gtk::prelude::{ContainerExt, GtkWindowExt, WidgetExt};
-use gtk_layer_shell::{Edge, KeyboardMode, Layer, LayerShell};
+// use gtk::prelude::{ContainerExt, GtkWindowExt, WidgetExt};
+// use gtk_layer_shell::{Edge, KeyboardMode, Layer, LayerShell};
 
 pub fn setup_launcher(app: tauri::AppHandle) {
     // let webview_window = create_window(app, "launcher", "/launcher");
-    let webview_window = tauri::WebviewWindowBuilder::new(
+    let _webview_window = tauri::WebviewWindowBuilder::new(
         &app,
         "launcher",
         tauri::WebviewUrl::App("/splashscreen".into()),
