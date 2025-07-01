@@ -27,13 +27,14 @@ pub fn run() {
             }
         }))
         .plugin(tauri_plugin_os::init())
-        .plugin(tauri_plugin_svelte::init());
+        .plugin(tauri_plugin_svelte::init())
+        .plugin(tauri_plugin_opener::init());
 
     // COMMANDS
     builder = builder.invoke_handler(tauri::generate_handler![
         commands::change_workspace,
         commands::toggle_launcher,
-        commands::get_battery_sys,
+        commands::get_battery_info,
         commands::get_system_info,
         commands::get_disk_info,
         commands::get_apps,

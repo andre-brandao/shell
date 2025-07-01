@@ -11,10 +11,10 @@
   ],
   "permissions": [
     "core:default",
-    "opener:default",
     "os:default",
     "core:image:default",
     "core:window:allow-hide",
-    "core:window:allow-set-always-on-top"
+    "core:window:allow-set-always-on-top",
+    "opener:default"
   ]
 }

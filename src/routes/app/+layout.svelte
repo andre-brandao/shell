@@ -1,6 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import { page } from "$app/state";
+  import Icon from "$lib/bar/widgets/Icon.svelte";
 
   let { children } = $props();
 
@@ -8,6 +9,10 @@
 </script>
 
 <main>
+  <div class="content">
+    {@render children()}
+  </div>
+
   <nav class="nav-bar">
     <div class="nav-left">
       <button
@@ -22,12 +27,10 @@
       <button class="nav-btn config-btn" onclick={() => goto("/app/settings")}>
         config
       </button>
+
+      <Icon />
     </div>
   </nav>
-
-  <div class="content">
-    {@render children()}
-  </div>
 </main>
 
 <style>
@@ -45,15 +48,37 @@
   main {
     min-height: 100vh;
     background-color: #1c1c1e;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .content {
+    flex: 1;
+    padding: 0;
+    padding-bottom: 60px; /* Add padding to prevent content from being hidden behind the navbar */
+    overflow-y: auto;
   }
 
   .nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
     background-color: #2c2c2e;
-    border-bottom: 1px solid #3a3a3c;
+    border-top: 1px solid #3a3a3c; /* Changed from border-bottom to border-top */
+    z-index: 10;
+  }
+
+  .nav-left,
+  .nav-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
   }
 
   .nav-btn {
@@ -78,9 +103,5 @@
     opacity: 0.4;
     cursor: not-allowed;
     color: #8e8e93;
-  }
-
-  .content {
-    padding: 0;
   }
 </style>

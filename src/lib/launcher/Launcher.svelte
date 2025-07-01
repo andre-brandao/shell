@@ -1,67 +1,30 @@
 <script lang="ts">
-  import { invoke } from "@tauri-apps/api/core";
-  import { listen, type UnlistenFn, type Event } from "@tauri-apps/api/event";
-  import { onDestroy, onMount } from "svelte";
-  import { convertFileSrc } from "@tauri-apps/api/core";
+  import { onMount } from "svelte";
+  import { appState } from "./apps.svelte";
 
-  let apps = $state<LinuxApp[]>();
-
-  let searchQuery = $state("");
-  let searchInput: HTMLInputElement | undefined;
-  let filteredApps = $derived.by(() => {
-    if (!searchQuery) return apps;
-    const query = searchQuery.toLowerCase();
-    return (
-      apps?.filter(
-        (app) =>
-          app.name.toLowerCase().includes(query) ||
-          (app.app_desktop && app.app_desktop.toLowerCase().includes(query)),
-      ) ?? []
-    );
-  });
-
-  function getApps() {
-    setTimeout(() => {
-      invoke<LinuxApp[]>("get_apps")
-        .then((e) => {
-          console.log(e);
-          apps = e;
-        })
-        .catch(console.error);
-    }, 1000);
-  }
-  function launchApp(app: LinuxApp) {
-    console.log(`Launching ${app.app_path_exe}`);
-    // In a real app, this would launch the application
-    // You can add actual app launching logic here
-  }
-
-  function clearSearch() {
-    searchQuery = "";
-    // searchInput?.focus();
-  }
-  $effect(() => {
-    getApps();
+  onMount(() => {
+    // Initialize the app state when the component mounts
+    appState.getApps();
   });
 </script>
 
 <div class="app-launcher">
   <div class="search-container">
     <input
-      bind:this={searchInput}
-      bind:value={searchQuery}
+      bind:this={appState.searchInput}
+      bind:value={appState.search}
       type="text"
       placeholder="Search apps..."
       class="search-input"
     />
-    {#if searchQuery}
-      <button class="clear-btn" onclick={clearSearch}>×</button>
+    {#if appState.search}
+      <button class="clear-btn" onclick={appState.clearSearch}>×</button>
     {/if}
   </div>
 
   <div class="app-list">
-    {#each filteredApps || [] as app (app.app_path_exe)}
-      <button class="app-item" onclick={() => launchApp(app)}>
+    {#each appState.filteredApps || [] as app (app.app_path_exe)}
+      <button class="app-item" onclick={() => appState.launchApp(app)}>
         <span class="app-name">{app.name}</span>
         {#if app.app_desktop}
           <span class="app-desktop">{app.app_desktop}</span>
@@ -69,7 +32,7 @@
       </button>
     {:else}
       <div class="no-apps">
-        {searchQuery ? "No apps found" : "Loading apps..."}
+        {appState.search ? "No apps found" : "Loading apps..."}
       </div>
     {/each}
   </div>

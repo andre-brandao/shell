@@ -172,7 +172,7 @@ pub fn get_disk_info() -> Option<Value> {
 }
 
 #[tauri::command]
-pub fn get_battery_sys() -> Option<u8> {
+pub fn get_battery_info() -> Option<u8> {
     let capacity = fs::read_to_string("/sys/class/power_supply/BAT0/capacity").ok()?;
 
     // Some(capacity.trim().parse::<u8>().unwrap_or(0))

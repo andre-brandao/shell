@@ -1,7 +1,7 @@
 import { createKeyedWatcher } from "./whatcher.svelte";
 import { invoke } from "@tauri-apps/api/core";
 import { listen, type UnlistenFn, type Event } from "@tauri-apps/api/event";
-const INTERVAL = 3000; // 1 second
+const INTERVAL = 10000; // 1 second
 
 function mkSysInfo() {
   const sysInfo: SysInfo = $state({
@@ -18,7 +18,7 @@ function mkSysInfo() {
           sysInfo.ram_usage = e.ram_usage ?? 0;
         })
         .catch(console.error);
-    }, INTERVAL);
+    }, INTERVAL + 1000);
 
     return () => clearInterval(timeout);
   }
@@ -52,7 +52,7 @@ function mkDiskInfo() {
           value = [disk];
         })
         .catch(console.error);
-    }, INTERVAL);
+    }, INTERVAL + 1500);
 
     return () => clearInterval(timeout);
   }
@@ -80,7 +80,7 @@ function mkBatteryInfo() {
           value = e
         })
         .catch(console.error);
-    }, INTERVAL);
+    }, INTERVAL + 2000);
 
     return () => clearInterval(timeout);
   }
