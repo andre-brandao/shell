@@ -10,10 +10,24 @@
   }
 </script>
 
-<button
+<div
+  class="icon-widget"
+  aria-label="Toggle Launcher"
   onclick={() => {
     toggle();
   }}
 >
-  <img src="/tauri.svg" height="24" width="24" alt="logo" />
-</button>
+  <span class="icon">  </span>
+</div>
+
+<style>
+  .icon-widget {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .icon {
+    font-size: 12px;
+  }
+</style>

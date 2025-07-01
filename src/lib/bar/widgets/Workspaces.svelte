@@ -23,10 +23,10 @@
   });
 </script>
 
-<div class="workspaces-container">
+<div class="workspaces-widget">
   {#each workspaces as workspace, i (workspace)}
-    <button
-      class="workspace-item"
+    <div
+      class="workspace"
       class:active={workspace === activeWorkspace}
       onclick={() =>
         invoke("change_workspace", { workspace })
@@ -34,48 +34,41 @@
           .catch(console.error)}
     >
       {workspace}
-    </button>
+    </div>
   {/each}
 </div>
 
 <style>
-  button {
-    /* remove default styles */
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-  }
-  .workspaces-container {
+  .workspaces-widget {
     display: flex;
+    gap: 4px;
     align-items: center;
-    height: 100%;
-    gap: 2px;
   }
 
-  .workspace-item {
-    min-width: 24px;
-    height: 24px;
+  .workspace {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 6px;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 12px;
-    /* background-color: #444; */
+    font-size: 10px;
+    font-weight: 600;
+    background-color: #48484a;
+    color: #8e8e93;
     transition: all 0.2s ease;
   }
 
-  .workspace-item:hover {
-    background-color: #555;
+  .workspace.active {
+    background-color: #007aff;
+    color: #ffffff;
   }
 
-  .workspace-item.active {
-    background-color: #666;
-    font-weight: bold;
-    color: #fff;
-    width: 32px;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+  .workspace:hover {
+    background-color: #5a5a5c;
+  }
+
+  .workspace.active:hover {
+    background-color: #0056cc;
   }
 </style>

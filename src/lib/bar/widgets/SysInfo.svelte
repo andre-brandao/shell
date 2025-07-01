@@ -27,33 +27,29 @@
 </script>
 
 {#if info}
-  <div class="info">
-    <div>
-      CPU: {info.cpu_usage}
-    </div>
-    <div>
-      RAM: {info.ram_usage.toFixed(0)}%
-    </div>
-    <!-- <div>
-      Used Storage: {info.used_memory} GB
-    </div> -->
+  <div class="sysinfo-widget">
+    <span class="metric">CPU {info.cpu_usage}%</span>
+    <span class="separator">•</span>
+    <span class="metric">RAM {info.ram_usage.toFixed(0)}%</span>
   </div>
 {/if}
 
 <style>
-  .info {
+  .sysinfo-widget {
     display: flex;
-    gap: 10px;
-    font-size: 14px;
-    color: white;
+    align-items: center;
+    gap: 6px;
   }
 
-  .info div {
-    background-color: #444;
-    padding: 5px 10px;
-    border-radius: 4px;
+  .metric {
+    font-size: 11px;
+    font-weight: 500;
+    color: #ffffff;
+    font-variant-numeric: tabular-nums;
   }
-  .info div:hover {
-    background-color: #555;
+
+  .separator {
+    color: #8e8e93;
+    font-size: 10px;
   }
 </style>

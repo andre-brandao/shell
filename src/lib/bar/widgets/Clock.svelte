@@ -4,7 +4,11 @@
 
   function updateTime() {
     const now = new Date();
-    time = now.toLocaleTimeString();
+    time = now.toLocaleTimeString("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
   }
   $effect(() => {
     updateTime();
@@ -15,4 +19,13 @@
   });
 </script>
 
-{time}
+<span class="clock">{time}</span>
+
+<style>
+  .clock {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 12px;
+  }
+</style>

@@ -30,32 +30,41 @@
 </script>
 
 {#if info}
-  <div class="info">
-    {#each info as disk}
-      <div>
+  {#each info as disk}
+    <div class="disks-widget">
+      <span class="disk-icon">💾</span>
+      <span class="disk-usage">
+        {(
+          (disk.total_space - disk.available_space) /
+          (1024 * 1024 * 1024)
+        ).toFixed(2)} GB used</span
+      >
+    </div>
+
+    <!-- <div>
         {(
           (disk.total_space - disk.available_space) /
           (1024 * 1024 * 1024)
         ).toFixed(2)} GB used
-      </div>
-    {/each}
-  </div>
+      </div> -->
+  {/each}
 {/if}
 
 <style>
-  .info {
+  .disks-widget {
     display: flex;
-    gap: 10px;
-    font-size: 14px;
-    color: white;
+    align-items: center;
+    gap: 4px;
   }
 
-  .info div {
-    background-color: #444;
-    padding: 5px 10px;
-    border-radius: 4px;
+  .disk-icon {
+    font-size: 10px;
   }
-  .info div:hover {
-    background-color: #555;
+
+  .disk-usage {
+    font-size: 11px;
+    font-weight: 500;
+    color: #ffffff;
+    font-variant-numeric: tabular-nums;
   }
 </style>
