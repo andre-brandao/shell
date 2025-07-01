@@ -438,6 +438,18 @@
     url = "https://registry.npmjs.org/@tauri-apps/plugin-os/-/plugin-os-2.3.0.tgz";
     hash = "sha512-dm3bDsMuUngpIQdJ1jaMkMfyQpHyDcaTIKTFaAMHoKeUd+Is3UHO2uzhElr6ZZkfytIIyQtSVnCWdW2Kc58f3g==";
   };
+  "@tauri-store/shared" = {
+    out_path = "@tauri-store/shared";
+    name = "@tauri-store/shared@0.9.0";
+    url = "https://registry.npmjs.org/@tauri-store/shared/-/shared-0.9.0.tgz";
+    hash = "sha512-eQzBGHR1I/MTfRQeKWBzibKPeXpOqtXxmWSkW3S9GDzS3hLzyrgPJK+bez1U1wrP9fKVmUFYpYinU5UQC3B1nw==";
+  };
+  "@tauri-store/svelte" = {
+    out_path = "@tauri-store/svelte";
+    name = "@tauri-store/svelte@2.6.0";
+    url = "https://registry.npmjs.org/@tauri-store/svelte/-/svelte-2.6.0.tgz";
+    hash = "sha512-iST2UAfebohQ29tT07J/r+2GCRF/HmSMVna5VynJbOsphrz+di5qCFqkhUvbM4Mzry/sWTL0x9zZJ9aq01yqJQ==";
+  };
   "@types/cookie" = {
     out_path = "@types/cookie";
     name = "@types/cookie@0.6.0";
@@ -506,6 +518,12 @@
     name = "devalue@5.1.1";
     url = "https://registry.npmjs.org/devalue/-/devalue-5.1.1.tgz";
     hash = "sha512-maua5KUiapvEwiEAe+XnlZ3Rh0GD+qI1J/nb9vrJc3muPXvcF/8gXYTWF76+5DAqHyDUtOIImEuo0YKE9mshVw==";
+  };
+  "es-toolkit" = {
+    out_path = "es-toolkit";
+    name = "es-toolkit@1.39.5";
+    url = "https://registry.npmjs.org/es-toolkit/-/es-toolkit-1.39.5.tgz";
+    hash = "sha512-z9V0qU4lx1TBXDNFWfAASWk6RNU6c6+TJBKE+FLIg8u0XJ6Yw58Hi0yX8ftEouj6p1QARRlXLFfHbIli93BdQQ==";
   };
   "esbuild" = {
     out_path = "esbuild";

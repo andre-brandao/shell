@@ -2,6 +2,7 @@ use tauri::{AppHandle, Manager};
 
 mod commands;
 mod setup;
+mod sv_commands;
 
 pub fn run() {
     let mut builder = tauri::Builder::default();
@@ -25,7 +26,8 @@ pub fn run() {
                 let _ = launcher_window.set_focus();
             }
         }))
-        .plugin(tauri_plugin_os::init());
+        .plugin(tauri_plugin_os::init())
+        .plugin(tauri_plugin_svelte::init());
 
     // COMMANDS
     builder = builder.invoke_handler(tauri::generate_handler![
