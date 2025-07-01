@@ -20,7 +20,7 @@ fn create_bar(
     let webview_window = tauri::WebviewWindowBuilder::new(
         &app,
         format!("bar_{}", index).as_str(),
-        tauri::WebviewUrl::App("/".into()),
+        tauri::WebviewUrl::App("/bar".into()),
     )
     .decorations(false)
     .build()

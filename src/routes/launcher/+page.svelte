@@ -1,5 +1,5 @@
 <script>
-  import Launcher from "$lib/Launcher.svelte";
+  import Launcher from "$lib/launcher/Launcher.svelte";
 </script>
 
 <Launcher />

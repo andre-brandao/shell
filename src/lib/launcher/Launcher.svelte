@@ -2,15 +2,9 @@
   import { invoke } from "@tauri-apps/api/core";
   import { listen, type UnlistenFn, type Event } from "@tauri-apps/api/event";
   import { onDestroy, onMount } from "svelte";
-  import Icon from "./widgets/Icon.svelte";
   import { convertFileSrc } from "@tauri-apps/api/core";
-  type App = {
-    name: string;
-    icon_path?: string;
-    app_path_exe: string;
-    app_desktop: string;
-  };
-  let apps = $state<App[]>();
+
+  let apps = $state<LinuxApp[]>();
 
   let searchQuery = $state("");
 
@@ -27,14 +21,14 @@
   });
 
   function getApps() {
-    invoke<App[]>("get_apps")
+    invoke<LinuxApp[]>("get_apps")
       .then((e) => {
         console.log(e);
         apps = e;
       })
       .catch(console.error);
   }
-  function launchApp(app: App) {
+  function launchApp(app: LinuxApp) {
     console.log(`Launching ${app.app_path_exe}`);
     // In a real app, this would launch the application
     // You can add actual app launching logic here
@@ -60,7 +54,6 @@
         class="search-input"
       />
       <span class="search-icon">🔍</span>
-      <Icon />
       {#if searchQuery}
         <button class="clear-button" onclick={clearSearch}>✕</button>
       {/if}
