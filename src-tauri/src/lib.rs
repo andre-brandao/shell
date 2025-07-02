@@ -1,6 +1,7 @@
 use tauri::{AppHandle, Manager};
 
 mod commands;
+// mod libs;
 mod setup;
 mod sv_commands;
 
@@ -57,6 +58,7 @@ pub fn run() {
 
     // RUN
     app.run(|_app_handle, event| match event {
+        // tauri::RunEvent::W
         tauri::RunEvent::WindowEvent { label, event, .. } => {
             if label == "launcher" {
                 match event {

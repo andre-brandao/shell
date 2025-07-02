@@ -27,3 +27,4 @@ type Disk = {
   type: string;
   mount_pont: string;
 }
+type CommandState = "search" | "help" | "shell" | "rdp" | "ssh" | "unknown";

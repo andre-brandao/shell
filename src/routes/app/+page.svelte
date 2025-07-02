@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { appState } from "$lib/launcher/apps.svelte";
   import AppsList from "$lib/launcher/AppsList.svelte";
+  import Help from "$lib/launcher/Help.svelte";
 
   onMount(() => {
     // Initialize the app state when the component mounts
@@ -22,8 +23,11 @@
       <button class="clear-btn" onclick={appState.clearSearch}>×</button>
     {/if}
   </div>
-
-  <AppsList />
+  {#if appState.command === "search"}
+    <AppsList />
+  {:else}
+    <Help />
+  {/if}
 </div>
 
 <style>
