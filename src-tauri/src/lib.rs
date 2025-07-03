@@ -1,9 +1,7 @@
 use tauri::{AppHandle, Manager};
 
-mod commands;
-// mod libs;
+mod cmds;
 mod setup;
-mod sv_commands;
 
 pub fn run() {
     let mut builder = tauri::Builder::default();
@@ -33,14 +31,13 @@ pub fn run() {
 
     // COMMANDS
     builder = builder.invoke_handler(tauri::generate_handler![
-        commands::change_workspace,
-        commands::toggle_launcher,
-        commands::get_battery_info,
-        commands::get_system_info,
-        commands::get_disk_info,
-        commands::get_apps,
-        commands::get_running_apps,
-        // toggle_launcher,
+        cmds::hyprland::change_workspace,
+        cmds::windows::toggle_launcher,
+        cmds::sysinfo::get_battery_info,
+        cmds::sysinfo::get_system_info,
+        cmds::sysinfo::get_disk_info,
+        // commands::get_apps,
+        cmds::application::get_apps // toggle_launcher,
     ]);
 
     // SETUP

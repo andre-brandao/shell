@@ -16,7 +16,7 @@ import { openPath } from "@tauri-apps/plugin-opener";
 class AppState {
   search = $state("")
   searchInput = $state<HTMLInputElement | null>(null)
-  apps = $state<LinuxApp[]>([])
+  apps = $state<AppDetails[]>([])
   filteredApps = $derived(this.filterApps())
   command = $derived(this.getCommand())
   filterApps() {
@@ -27,6 +27,9 @@ class AppState {
     return this.apps
       .filter(app =>
         app.name
+          .toLowerCase()
+          .includes(query)
+        || app.display_name
           .toLowerCase()
           .includes(query)
       );
@@ -50,16 +53,13 @@ class AppState {
 
     return "unknown"
   }
-  chApp(app: LinuxApp) {
-    console.log(`Launching ${app.app_path_exe}`);
-    openPath(app.app_path_exe);
-  }
-  launchApp(app: LinuxApp) {
-    console.log(`Launching ${app.app_path_exe}`);
-    openPath(app.app_path_exe);
+
+  launchApp(app: AppDetails) {
+    console.log(`Launching `, app);
+    openPath(app.exec);
   }
   getApps() {
-    invoke<LinuxApp[]>("get_apps")
+    invoke<AppDetails[]>("get_apps")
       .then((e) => {
         console.log(e);
         this.apps = e;

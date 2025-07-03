@@ -1,10 +1,18 @@
-type LinuxApp = {
-  name: string;
-  icon_path?: string;
-  app_path_exe: string;
-  app_desktop: string;
-};
+// type LinuxApp = {
+//   name: string;
+//   icon_path?: string;
+//   app_path_exe: string;
+//   app_desktop: string;
+// };
 
+type AppDetails = {
+  id: string;
+  name: string;
+  display_name: string;
+  description: string;
+  exec: string;
+  commandline: string;
+}
 type ActiveClient = {
   class: string;
   title: string;

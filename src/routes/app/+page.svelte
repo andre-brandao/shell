@@ -33,7 +33,6 @@
 <style>
   .app-launcher {
     background-color: #1c1c1e;
-    min-height: calc(100vh - 60px);
   }
 
   .search-container {

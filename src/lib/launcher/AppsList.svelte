@@ -3,11 +3,11 @@
 </script>
 
 <div class="app-list">
-  {#each appState.filteredApps || [] as app (app.app_path_exe)}
+  {#each appState.filteredApps || [] as app, i (i)}
     <button class="app-item" onclick={() => appState.launchApp(app)}>
       <span class="app-name">{app.name}</span>
-      {#if app.app_desktop}
-        <span class="app-desktop">{app.app_desktop}</span>
+      {#if app.description}
+        <span class="app-desktop">{app.description}</span>
       {/if}
     </button>
   {:else}

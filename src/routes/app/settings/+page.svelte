@@ -1,9 +1,12 @@
 <script lang="ts">
+  import { invoke } from "@tauri-apps/api/core";
+
   let settings = $state({
     theme: "dark",
     autoLaunch: true,
     showIcons: false,
   });
+  // invoke
 </script>
 
 <div class="settings-page">
@@ -28,6 +31,14 @@
       </label>
     </div>
   </div>
+
+  <button
+    onclick={() => {
+      invoke("get_apps_2").then(console.log).catch(console.error);
+    }}
+  >
+    Teste Apps 2
+  </button>
 </div>
 
 <style>

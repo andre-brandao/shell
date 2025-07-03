@@ -1,5 +1,6 @@
 // use gtk::prelude::{ContainerExt, GtkWindowExt, WidgetExt};
 // use gtk_layer_shell::{Edge, KeyboardMode, Layer, LayerShell};
+use crate::cmds::windows::hide_launcher;
 use gtk::prelude::{ContainerExt, GtkWindowExt, WidgetExt, WidgetExtManual};
 
 pub fn setup_launcher(app: tauri::AppHandle) {
@@ -28,7 +29,8 @@ pub fn setup_launcher(app: tauri::AppHandle) {
         // Key(65307)
         if keyval.to_unicode() == Some('\u{1b}') {
             // Hide the launcher window when Escape is pressed
-            _webview_window.hide().unwrap();
+            // _webview_window.hide().unwrap();
+            hide_launcher(app.clone());
         }
 
         return glib::Propagation::Proceed;
@@ -90,6 +92,7 @@ pub fn setup_launcher(app: tauri::AppHandle) {
     // gtk_window.set_anchor(Edge::Bottom, false);
     // gtk_window.set_anchor(Edge::Left, false);
     // gtk_window.set_anchor(Edge::Right, false);
+    _webview_window.hide().unwrap();
 
     // return (gtk_window, webview_window);
 }
