@@ -25,9 +25,7 @@
     {:else if appState.command === "disk"}
       <DisksInfo />
     {:else}
-      <div class="no-apps">
-        {appState.search ? "No apps found" : "Type to search or use commands"}
-      </div>
+      <Help />
     {/if}
   </div>
 </div>

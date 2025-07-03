@@ -37,6 +37,7 @@ pub fn run() {
         cmds::sysinfo::get_system_info,
         cmds::sysinfo::get_disk_info,
         // commands::get_apps,
+        cmds::menu::show_context_menu,
         cmds::application::get_apps // toggle_launcher,
     ]);
 
