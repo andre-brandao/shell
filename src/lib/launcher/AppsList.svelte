@@ -20,8 +20,6 @@
 <style>
   .app-list {
     padding: 8px 0;
-    overflow-y: scroll;
-    height: calc(100vh - 90px); /* Adjust height to fit the viewport */
   }
   .app-item {
     background: transparent;
