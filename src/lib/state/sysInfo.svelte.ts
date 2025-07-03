@@ -6,19 +6,36 @@ const INTERVAL = 10000; // 1 second
 function mkSysInfo() {
   const sysInfo: SysInfo = $state({
     cpu_usage: 0,
-    ram_usage: 0
+    cpu_count: 0,
+    ram_usage: 0,
+    ram_total: 0,
+    ram_available: 0,
+    ram_free: 0,
+    ram_used: 0,
+    swap_total: 0,
+    swap_usage: 0,
+    swap_used: 0,
+    uptime_seconds: 0,
+    load_average: {
+      one: 0,
+      five: 0,
+      fifteen: 0
+    }
+
   });
 
-  const setupInfo = () => {
-    const timeout = setInterval(() => {
-      invoke<SysInfo>("get_system_info")
-        .then((e) => {
-          console.log(e);
-          sysInfo.cpu_usage = e.cpu_usage ?? 0;
-          sysInfo.ram_usage = e.ram_usage ?? 0;
-        })
-        .catch(console.error);
-    }, INTERVAL + 1000);
+  const getSystemInfo = () => {
+    invoke<SysInfo>("get_system_info")
+      .then((e) => {
+        console.log(e);
+        sysInfo.cpu_usage = e.cpu_usage ?? 0;
+        sysInfo.ram_usage = e.ram_usage ?? 0;
+      })
+      .catch(console.error);
+  }
+  const setup = () => {
+    getSystemInfo();
+    const timeout = setInterval(getSystemInfo, INTERVAL + 1000);
 
     return () => clearInterval(timeout);
   }
@@ -26,7 +43,7 @@ function mkSysInfo() {
   const watcher = createKeyedWatcher();
   return {
     get value() {
-      watcher.watch(setupInfo);
+      watcher.watch(setup);
       return sysInfo;
     }
   };
@@ -38,22 +55,24 @@ export const sysInfo = mkSysInfo();
 function mkDiskInfo() {
   let value: Disk[] = $state([]);
 
+
+  const getDiskInfo = () => {
+    invoke<any>("get_disk_info")
+      .then((e) => {
+        console.log(e);
+
+        const disk = e[0];
+        if (!disk) {
+          console.warn("No disk info received");
+          return;
+        }
+        value = [disk];
+      })
+      .catch(console.error);
+  }
   const setup = () => {
-    const timeout = setInterval(() => {
-      invoke<any>("get_disk_info")
-        .then((e) => {
-          console.log(e);
-
-          const disk = e[0];
-          if (!disk) {
-            console.warn("No disk info received");
-            return;
-          }
-          value = [disk];
-        })
-        .catch(console.error);
-    }, INTERVAL + 1500);
-
+    getDiskInfo();
+    const timeout = setInterval(getDiskInfo, INTERVAL + 1500);
     return () => clearInterval(timeout);
   }
 
@@ -78,15 +97,18 @@ function mkBatteryInfo() {
     model_name: "Unknown",
   });
 
+  const getBatteryInfo = () => {
+
+    invoke<Battery>("get_battery_info")
+      .then((e) => {
+        if (!e) return
+        value = e
+      })
+      .catch(console.error);
+  }
   const setup = () => {
-    const timeout = setInterval(() => {
-      invoke<Battery>("get_battery_info")
-        .then((e) => {
-          if (!e) return
-          value = e
-        })
-        .catch(console.error);
-    }, INTERVAL + 2000);
+    getBatteryInfo();
+    const timeout = setInterval(getBatteryInfo, INTERVAL + 2000);
 
     return () => clearInterval(timeout);
   }

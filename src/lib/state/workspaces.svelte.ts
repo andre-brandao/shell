@@ -26,7 +26,7 @@ function mkWorkspaces() {
     },
 
     async changeWorkspace(id: Workspaces["id"]) {
-      invoke("change_workspace", { workspace: id })
+      invoke("change_workspace", { workspace: id + 1 })
         .then(console.log)
         .catch(console.error)
     }
