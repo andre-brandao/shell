@@ -1,10 +1,3 @@
-// type LinuxApp = {
-//   name: string;
-//   icon_path?: string;
-//   app_path_exe: string;
-//   app_desktop: string;
-// };
-
 type AppDetails = {
   id: string;
   name: string;
@@ -25,7 +18,24 @@ type Workspaces = {
 
 type SysInfo = {
   cpu_usage: number;
+  cpu_count: number;
   ram_usage: number;
+  ram_total: number;
+  ram_used: number;
+  /* “free” memory refers to unallocated memory whereas*/
+  ram_free: number;
+  /*  “available” memory refers to memory that is available for (re)use. */
+  ram_available: number;
+  swap_usage: number;
+  swap_total: number;
+  swap_used: number;
+  uptime_seconds: number;
+  load_average: {
+    one: number;
+    five: number;
+    fifteen: number;
+  }
+
 }
 
 type Disk = {
@@ -34,5 +44,20 @@ type Disk = {
   available_space: number;
   type: string;
   mount_pont: string;
+  file_system: string;
+  is_removable: boolean;
 }
-type CommandState = "search" | "help" | "shell" | "rdp" | "ssh" | "unknown";
+
+type Battery = {
+  current: number;
+  status: "Charging" | "Discharging" | "Full";
+  technology: string;
+  health: string;
+  voltage_now?: number;
+  current_now?: number;
+  power_now?: number;
+  model_name: string;
+  battery_index?: number;
+}
+
+type CommandState = "search" | "help" | "shell" | "rdp" | "ssh" | "battery" | "disk" | "htop" | "unknown";

@@ -50,6 +50,12 @@ class AppState {
     if (this.search.startsWith(":ssh")) {
       return "ssh";
     }
+    if (this.search.startsWith(":bat")) {
+      return "battery";
+    }
+    if (this.search.startsWith(":disk")) {
+      return "disk";
+    }
 
     return "unknown"
   }

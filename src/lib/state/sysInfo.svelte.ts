@@ -70,11 +70,17 @@ export const discInfo = mkDiskInfo();
 
 
 function mkBatteryInfo() {
-  let value = $state(0);
+  let value: Battery = $state({
+    current: 0,
+    status: "Discharging",
+    technology: "Unknown",
+    health: "Unknown",
+    model_name: "Unknown",
+  });
 
   const setup = () => {
     const timeout = setInterval(() => {
-      invoke<number>("get_battery_info")
+      invoke<Battery>("get_battery_info")
         .then((e) => {
           if (!e) return
           value = e

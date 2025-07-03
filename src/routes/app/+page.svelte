@@ -4,6 +4,8 @@
   import AppsList from "$lib/launcher/AppsList.svelte";
   import Help from "$lib/launcher/Help.svelte";
   import Input from "$lib/launcher/Input.svelte";
+  import BatteryInfo from "$lib/launcher/BatteryInfo.svelte";
+  import DisksInfo from "$lib/launcher/DisksInfo.svelte";
 
   onMount(() => {
     // Initialize the app state when the component mounts
@@ -16,8 +18,16 @@
   <div class="content-area">
     {#if appState.command === "search"}
       <AppsList />
-    {:else}
+    {:else if appState.command === "help"}
       <Help />
+    {:else if appState.command === "battery"}
+      <BatteryInfo />
+    {:else if appState.command === "disk"}
+      <DisksInfo />
+    {:else}
+      <div class="no-apps">
+        {appState.search ? "No apps found" : "Type to search or use commands"}
+      </div>
     {/if}
   </div>
 </div>
@@ -25,11 +35,17 @@
 <style>
   .app-launcher {
     background-color: #1c1c1e;
-    /* height: 100vh; */
+    width: 100%;
+    min-height: 500px; /* Add minimum height */
+    display: flex;
+    flex-direction: column;
   }
 
   .content-area {
-    max-height: 400px;
+    max-height: 420px;
+    /* height: 100%; */
+    width: 100%;
     overflow-y: auto;
+    flex: 1;
   }
 </style>
