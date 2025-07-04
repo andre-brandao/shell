@@ -26,7 +26,6 @@ pub fn run() {
             }
         }))
         .plugin(tauri_plugin_os::init())
-        .plugin(tauri_plugin_svelte::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_fs::init());
 
