@@ -426,6 +426,12 @@
     url = "https://registry.npmjs.org/@tauri-apps/cli-win32-x64-msvc/-/cli-win32-x64-msvc-2.6.1.tgz";
     hash = "sha512-fBsjPqIIHaaQt7tnjIGmPHu5p/BNBVD4JfOhO3QqIVBzAb+W2bDyIQPdoDMI943soLr/+N10xeTiPu+3L74+dQ==";
   };
+  "@tauri-apps/plugin-fs" = {
+    out_path = "@tauri-apps/plugin-fs";
+    name = "@tauri-apps/plugin-fs@2.4.0";
+    url = "https://registry.npmjs.org/@tauri-apps/plugin-fs/-/plugin-fs-2.4.0.tgz";
+    hash = "sha512-Sp8AdDcbyXyk6LD6Pmdx44SH3LPeNAvxR2TFfq/8CwqzfO1yOyV+RzT8fov0NNN7d9nvW7O7MtMAptJ42YXA5g==";
+  };
   "@tauri-apps/plugin-opener" = {
     out_path = "@tauri-apps/plugin-opener";
     name = "@tauri-apps/plugin-opener@2.4.0";

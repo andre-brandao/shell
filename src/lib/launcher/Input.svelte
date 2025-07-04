@@ -47,7 +47,6 @@
 
 <style>
   .search-container {
-    width: 100%;
     position: relative;
     padding: 16px 16px 16px 16px;
     border-bottom: 1px solid #3a3a3c;
@@ -76,7 +75,7 @@
 
   .clear-btn {
     position: absolute;
-    right: 50px;
+    /* right: 50px; */
     top: 50%;
     transform: translateY(-50%);
     background: transparent;
