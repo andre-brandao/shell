@@ -1,4 +1,4 @@
-use serde_json::{json, Value};
+// use serde_json::{json, Value};
 use tauri::Manager;
 
 #[tauri::command]
@@ -9,7 +9,9 @@ pub fn toggle_launcher(app_handle: tauri::AppHandle) {
 
     match window.is_visible() {
         Ok(true) => window.hide().unwrap(),
-        Ok(false) => window.show().unwrap(),
+        Ok(false) => {
+            window.show().unwrap();
+        }
         Err(e) => println!("Error checking visibility: {}", e),
     }
 }

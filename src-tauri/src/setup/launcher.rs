@@ -24,75 +24,60 @@ pub fn setup_launcher(app: tauri::AppHandle) {
         .gtk_window()
         .expect("Failed to get GTK window from WebviewWindow");
 
+    let app_pe = app.clone();
     let _ = gtk_window.connect_key_press_event(move |_win, event| {
         let keyval = event.keyval();
         // Key(65307)
-        if keyval.to_unicode() == Some('\u{1b}') {
+        if keyval.to_unicode() == /*ESC*/ Some('\u{1b}') {
             // Hide the launcher window when Escape is pressed
             // _webview_window.hide().unwrap();
-            hide_launcher(app.clone());
+            hide_launcher(app_pe.clone());
         }
 
         return glib::Propagation::Proceed;
     });
-    // gtk_window.modifier_mask(gdk::EventMask::BUTTON_PRESS_MASK);
-    // Replace this incomplete line:
-    // gtk_window.event
-    // With:
 
-    gtk_window.add_events(gdk::EventMask::BUTTON_PRESS_MASK);
-    let _ = gtk_window.connect_button_press_event(move |win, event| {
-        let button = event.button();
-        let (x, y) = event.position();
-        println!("Button pressed: {:?}", button);
-        let rect = win.allocation();
-
-        let is_click_inside = rect
-            .intersect(&gdk::Rectangle::new(x as i32, y as i32, 1, 1))
-            .is_some();
-
-        println!(
-            "Click position: ({}, {}), Window allocation: {:?}, Is click inside: {}",
-            x, y, rect, is_click_inside
-        );
-        if !is_click_inside {
-            println!("SHOULD HIDE");
-        }
-        return glib::Propagation::Proceed;
-    });
-    // -----------------GTK WINDOW------------------------
-    // webview_window.hide().unwrap();
-
-    // let gtk_window =
-    //     // gtk::ApplicationWindow::new(&webview_window.gtk_window().unwrap().application().unwrap());
-    //     gtk::ApplicationWindow::builder()
-    //         .application(&webview_window.gtk_window().unwrap().application().unwrap())
-    //         .app_paintable(true)
-    //         .width_request(800)
-    //         .height_request(600)
-    //         .window_position(gtk::WindowPosition::Center)
-    //         .modal(true)
-    //         // .show_menubar(false)
-    //         .build();
-
-    // let vbox = webview_window.default_vbox().unwrap();
-    // webview_window.gtk_window().unwrap().remove(&vbox);
-    // gtk_window.add(&vbox);
-    // gtk_window.init_layer_shell();
-    // gtk_window.set_layer(Layer::Overlay);
-    // gtk_window.set_keyboard_mode(KeyboardMode::Exclusive); // to allow keyboard input
-    // gtk_window.set_exclusive_zone(0);
-    // gtk_window.show_all();
-    // /-------------------
-    // gtk_window.set_layer_shell_margin(Edge::Left, 40);
-    // gtk_window.set_layer_shell_margin(Edge::Right, 40);
-    // gtk_window.set_layer_shell_margin(Edge::Top, 20);
-
-    // gtk_window.set_anchor(Edge::Top, false);
-    // gtk_window.set_anchor(Edge::Bottom, false);
-    // gtk_window.set_anchor(Edge::Left, false);
-    // gtk_window.set_anchor(Edge::Right, false);
     _webview_window.hide().unwrap();
 
     // return (gtk_window, webview_window);
 }
+
+// let app_clone = app.clone();
+// let _ = gtk_window.connect_focus_out_event(move |_win, _event| {
+//     println!("Window lost focus, hiding launcher");
+//     hide_launcher(app_clone.clone());
+//     glib::Propagation::Proceed
+// });
+
+// -----------------GTK WINDOW------------------------
+// webview_window.hide().unwrap();
+
+// let gtk_window =
+//     // gtk::ApplicationWindow::new(&webview_window.gtk_window().unwrap().application().unwrap());
+//     gtk::ApplicationWindow::builder()
+//         .application(&webview_window.gtk_window().unwrap().application().unwrap())
+//         .app_paintable(true)
+//         .width_request(800)
+//         .height_request(600)
+//         .window_position(gtk::WindowPosition::Center)
+//         .modal(true)
+//         // .show_menubar(false)
+//         .build();
+
+// let vbox = webview_window.default_vbox().unwrap();
+// webview_window.gtk_window().unwrap().remove(&vbox);
+// gtk_window.add(&vbox);
+// gtk_window.init_layer_shell();
+// gtk_window.set_layer(Layer::Overlay);
+// gtk_window.set_keyboard_mode(KeyboardMode::Exclusive); // to allow keyboard input
+// gtk_window.set_exclusive_zone(0);
+// gtk_window.show_all();
+// /-------------------
+// gtk_window.set_layer_shell_margin(Edge::Left, 40);
+// gtk_window.set_layer_shell_margin(Edge::Right, 40);
+// gtk_window.set_layer_shell_margin(Edge::Top, 20);
+
+// gtk_window.set_anchor(Edge::Top, false);
+// gtk_window.set_anchor(Edge::Bottom, false);
+// gtk_window.set_anchor(Edge::Left, false);
+// gtk_window.set_anchor(Edge::Right, false);
