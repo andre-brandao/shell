@@ -61,3 +61,50 @@ type Battery = {
 }
 
 type CommandState = "search" | "help" | "shell" | "rdp" | "ssh" | "battery" | "disk" | "htop" | "unknown";
+
+
+type HyprBinds = {
+  arg: string
+  dispatcher: string
+  key: string
+  keycode: number
+  locked: boolean
+  modmask: number
+  mouse: boolean
+  release: boolean
+  repeat: boolean
+  submap: string
+}
+
+type HyprAnimations = {
+  bezier: string | { name: string }
+  enabled: true
+  name: string
+  overridden: boolean
+  speed: number;
+  style: string | Record<string, unknown>
+}
+
+type HyprClient = {
+  at: [number, number];
+  size: [number, number];
+  class: string;
+  floating: boolean;
+  focus_history_id: number;
+  fullscreen: number;
+  fullscreen_client: number;
+  grouped: string[];
+  initial_class: string;
+  initial_title: string;
+  mapped: boolean;
+  monitor: number;
+  pid: number;
+  pinned: boolean;
+  swallowing: string;
+  title: string;
+  workspace: {
+    id: number;
+    name: string;
+  };
+  xwayland: boolean
+}

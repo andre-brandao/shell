@@ -1,114 +1,88 @@
 <script lang="ts">
-  import {
-    assetToPath,
-    onEventShowMenu,
-    showMenu,
-    type ContextMenu,
-  } from "$lib/utils/context-menu";
+  // import {
+  //   assetToPath,
+  //   onEventShowMenu,
+  //   showMenu,
+  //   type ContextMenu,
+  // } from "$lib/utils/context-menu";
+  import { invoke } from "@tauri-apps/api/core";
 
-  // onEventShowMenu("contextmenu", async (_e: MouseEvent | undefined) => {
-  //   const options: ContextMenu.Options = {
-  //     theme: "dark",
-  //     items: [
-  //       {
-  //         label: "My first item",
-  //         disabled: false,
-  //         event: (e: any) => {
-  //           alert(e.payload?.message);
-  //         },
-  //         payload: { message: "Hello from the payload!" },
-  //         shortcut: "alt+m",
-  //         icon: {
-  //           path: await assetToPath("assets/16x16.png"),
-  //           width: 32,
-  //           height: 32,
-  //         },
-  //       },
-  //       {
-  //         is_separator: true,
-  //       },
-  //       {
-  //         label: "My second item",
-  //         disabled: false,
-  //         event: "my_second_item",
-  //         shortcut: "cmd+C",
-  //       },
-  //       {
-  //         label: "My third item",
-  //         disabled: false,
-  //         subitems: [
-  //           {
-  //             label: "My first subitem",
-  //             checked: true,
-  //             event: () => {
-  //               alert("My first subitem clicked");
-  //             },
-  //             shortcut: "ctrl+m",
-  //           },
-  //           {
-  //             label: "My second subitem",
-  //             checked: false,
-  //             disabled: true,
-  //           },
-  //         ],
-  //       },
-  //     ],
-  //   };
-  //   return options;
-  // });
+  let result_binds = $state("");
 </script>
 
-<button
-  onclick={async () => {
-    const options: ContextMenu.Options = {
-      theme: "dark",
-      items: [
-        {
-          label: "My first item",
-          disabled: false,
-          event: (e: any) => {
-            alert(e.payload?.message);
-          },
-          payload: { message: "Hello from the payload!" },
-          shortcut: "alt+m",
-          icon: {
-            path: await assetToPath("assets/16x16.png"),
-            width: 32,
-            height: 32,
-          },
-        },
-        {
-          is_separator: true,
-        },
-        {
-          label: "My second item",
-          disabled: false,
-          event: "my_second_item",
-          shortcut: "cmd+C",
-        },
-        {
-          label: "My third item",
-          disabled: false,
-          subitems: [
-            {
-              label: "My first subitem",
-              checked: true,
-              event: () => {
-                alert("My first subitem clicked");
-              },
-              shortcut: "ctrl+m",
-            },
-            {
-              label: "My second subitem",
-              checked: false,
-              disabled: true,
-            },
-          ],
-        },
-      ],
-    };
-    showMenu(options);
-  }}
->
-  Show Menu
-</button>
+<main class="container">
+  <div class="test-c">
+    <h1>Teste Binds</h1>
+    <button
+      onclick={async () => {
+        const res = await invoke("hypr_clients");
+        console.log(res);
+        result_binds = JSON.stringify(res, null, 2);
+      }}
+    >
+      Teste
+    </button>
+
+    <pre>
+      {result_binds}
+    </pre>
+  </div>
+</main>
+
+<style>
+  /* <!-- styel it --> */
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* min-height: 100vh; */
+    background-color: #282c34;
+    color: white;
+    padding: 20px;
+    overflow: scroll;
+    max-height: 100vh;
+  }
+
+  .test-c {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #61dafb;
+    border-radius: 8px;
+    text-align: center;
+    width: 80%;
+    max-width: 600px;
+  }
+
+  h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+  }
+
+  button {
+    background-color: #61dafb;
+    color: #282c34;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #47a3c6;
+  }
+
+  pre {
+    background-color: #333;
+    color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    text-align: left;
+  }
+</style>

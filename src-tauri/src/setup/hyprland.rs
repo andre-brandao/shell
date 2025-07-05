@@ -1,81 +1,116 @@
-use hyprland::event_listener::EventListener;
+use futures_lite::StreamExt;
+use hyprland::event_listener::{Event, EventStream};
+use hyprland::prelude::*;
+use hyprland::shared::{HyprData, HyprDataActive, HyprDataActiveOptional};
 use serde_json::json;
-use std::thread;
 use tauri::{AppHandle, Emitter};
+// use tokio;
 
 pub fn listen_events(app: AppHandle) {
-    thread::spawn(move || {
-        let mut event_listener = EventListener::new();
+    tauri::async_runtime::spawn(async move {
+        let mut event_stream = EventStream::new();
 
-        // Register all event handlers
-        register_workspace_handler(&mut event_listener, app.clone());
-        register_active_window_handler(&mut event_listener, app.clone());
-        register_fullscreen_handler(&mut event_listener, app.clone());
-        register_active_monitor_handler(&mut event_listener, app.clone());
-
-        // Start the event listener
-        if let Err(e) = event_listener.start_listener() {
-            eprintln!("Failed to start Hyprland event listener: {}", e);
+        while let Some(event_result) = event_stream.next().await {
+            match event_result {
+                Ok(event) => {
+                    handle_event(event, app.clone()).await;
+                }
+                Err(e) => {
+                    eprintln!("Error receiving Hyprland event: {}", e);
+                }
+            }
         }
     });
 }
 
-// Register handler for workspace changes
-fn register_workspace_handler(event_listener: &mut EventListener, app_handle: AppHandle) {
-    event_listener.add_workspace_changed_handler(move |workspace_event| {
-        // println!("{workspace_event:#?}");
-        app_handle
-            .emit(
-                "workspace-changed",
-                json!({
-                    "name": workspace_event.name,
-                    "id": workspace_event.id,
-                }),
-            )
-            .unwrap();
-    });
-}
+async fn handle_event(event: hyprland::event_listener::Event, app_handle: AppHandle) {
+    use hyprland::event_listener::Event;
 
-// Register handler for active window changes
-fn register_active_window_handler(event_listener: &mut EventListener, app_handle: AppHandle) {
-    event_listener.add_active_window_changed_handler(move |data| {
-        // println!("{data:#?}");
-        // if some window emit class and title in a json
-        if let Some(window) = data {
-            let json_data = json!({
-                "class": window.class,
-                "title": window.title,
-            });
-            app_handle.emit("active-window-changed", json_data).unwrap();
-        } else {
-            app_handle
-                .emit("active-window-changed", serde_json::Value::Null)
-                .unwrap();
+    match event {
+        Event::WorkspaceChanged(workspace_data) => {
+            handle_workspace_changed(workspace_data, app_handle).await;
         }
-    });
+        Event::ActiveWindowChanged(window_data) => {
+            handle_active_window_changed(window_data, app_handle).await;
+        }
+        Event::FullscreenStateChanged(fullscreen_state) => {
+            handle_fullscreen_changed(fullscreen_state, app_handle).await;
+        }
+        Event::ActiveMonitorChanged(monitor_data) => {
+            handle_active_monitor_changed(monitor_data, app_handle).await;
+        }
+        Event::Screencast(screencast_data) => {
+            handle_screencast(screencast_data, app_handle).await;
+        }
+        _ => {
+            // Handle other events or ignore them
+            // println!("Unhandled event: {:?}", event);
+        }
+    }
 }
 
-// Register handler for fullscreen state changes
-fn register_fullscreen_handler(event_listener: &mut EventListener, app_handle: AppHandle) {
-    event_listener.add_fullscreen_state_changed_handler(move |fstate| {
-        // println!("Window {} fullscreen", if fstate { "is" } else { "is not" });
-
-        // Emit fullscreen state event
-        app_handle.emit("fullscreen-changed", fstate).unwrap();
+async fn handle_screencast(
+    screencast_data: hyprland::event_listener::ScreencastEventData,
+    app_handle: AppHandle,
+) {
+    let json_data = json!({
+      "turning_on": screencast_data.turning_on,
+      "monitor": screencast_data.monitor,
     });
+
+    if let Err(e) = app_handle.emit("screencast-changed", json_data) {
+        eprintln!("Failed to emit screencast-changed: {}", e);
+    }
 }
 
-// Register handler for active monitor changes
-fn register_active_monitor_handler(event_listener: &mut EventListener, app_handle: AppHandle) {
-    event_listener.add_active_monitor_changed_handler(move |state| {
-        // println!("Monitor state: {state:#?}");
-
-        let json_data = json!({
-            "monitor_name": state.monitor_name,
-            "workspace_name": state.workspace_name,
-        });
-        app_handle
-            .emit("active-monitor-changed", json_data)
-            .unwrap();
+async fn handle_workspace_changed(
+    workspace_data: hyprland::event_listener::WorkspaceEventData,
+    app_handle: AppHandle,
+) {
+    let json_data = json!({
+        "name": workspace_data.name,
+        "id": workspace_data.id,
     });
+
+    if let Err(e) = app_handle.emit("workspace-changed", json_data) {
+        eprintln!("Failed to emit workspace-changed event: {}", e);
+    }
+}
+
+async fn handle_active_window_changed(
+    window_data: Option<hyprland::event_listener::WindowEventData>,
+    app_handle: AppHandle,
+) {
+    let json_data = if let Some(window) = window_data {
+        json!({
+            "class": window.class,
+            "title": window.title,
+        })
+    } else {
+        serde_json::Value::Null
+    };
+
+    if let Err(e) = app_handle.emit("active-window-changed", json_data) {
+        eprintln!("Failed to emit active-window-changed event: {}", e);
+    }
+}
+
+async fn handle_fullscreen_changed(fullscreen_state: bool, app_handle: AppHandle) {
+    if let Err(e) = app_handle.emit("fullscreen-changed", fullscreen_state) {
+        eprintln!("Failed to emit fullscreen-changed event: {}", e);
+    }
+}
+
+async fn handle_active_monitor_changed(
+    monitor_data: hyprland::event_listener::MonitorEventData,
+    app_handle: AppHandle,
+) {
+    let json_data = json!({
+        "monitor_name": monitor_data.monitor_name,
+        "workspace_name": monitor_data.workspace_name,
+    });
+
+    if let Err(e) = app_handle.emit("active-monitor-changed", json_data) {
+        eprintln!("Failed to emit active-monitor-changed event: {}", e);
+    }
 }

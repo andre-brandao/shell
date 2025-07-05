@@ -32,6 +32,14 @@ pub fn run() {
     // COMMANDS
     builder = builder.invoke_handler(tauri::generate_handler![
         cmds::hyprland::change_workspace,
+        cmds::hyprland::hypr_animations,
+        cmds::hyprland::hypr_binds,
+        cmds::hyprland::hypr_clients,
+        cmds::hyprland::hypr_mice,
+        cmds::hyprland::hypr_tablets,
+        cmds::hyprland::hypr_keyboards,
+        cmds::hyprland::hypr_monitors,
+        cmds::hyprland::hypr_workspaces,
         cmds::windows::toggle_launcher,
         cmds::sysinfo::get_battery_info,
         cmds::sysinfo::get_system_info,
@@ -46,6 +54,7 @@ pub fn run() {
         setup::bar::setup_bar(app.handle().clone());
         setup::launcher::setup_launcher(app.handle().clone());
         setup::hyprland::listen_events(app.handle().clone());
+
         Ok(())
     });
 
