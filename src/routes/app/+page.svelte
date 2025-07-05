@@ -1,11 +1,6 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import { appState } from "$lib/launcher/launcher.svelte";
-  import AppsList from "$lib/launcher/AppsList.svelte";
-  import Help from "$lib/launcher/Help.svelte";
   import Input from "$lib/launcher/Input.svelte";
-  import BatteryInfo from "$lib/launcher/BatteryInfo.svelte";
-  import DisksInfo from "$lib/launcher/DisksInfo.svelte";
 
   // onMount(() => {
   //   // Initialize the app state when the component mounts
@@ -18,7 +13,7 @@
   <Input />
   <div class="content-area">
     {#key appState.command}
-      <appState.command input={appState.input} />
+      <appState.command input={appState.search} />
     {/key}
   </div>
 </div>

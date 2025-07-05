@@ -1,54 +1,64 @@
 <script lang="ts">
-  import type { AppDetails } from "$lib/types";
-  import { invoke } from "@tauri-apps/api/core";
-  import type { LauncherPluginComponentProps } from "./types";
+  import type { LauncherPluginComponentProps } from "../types";
   import { onMount } from "svelte";
   import * as cmds from "$lib/cmds";
   import { Command, open } from "@tauri-apps/plugin-shell";
   let { input }: LauncherPluginComponentProps = $props();
 
-  let apps: AppDetails[] = $state([]);
-  let filteredApps: AppDetails[] = $derived(filterApps(input));
+  const PREFIX = "legacyPackages.x86_64-linux.";
+
+  type Nixpkg = {
+    description: string;
+    pname: string;
+    version: string;
+  };
+  let apps: Nixpkg[] = $state([]);
+  let nixpkgs: Record<string, Nixpkg> = $state({});
+
+  let filteredApps: Nixpkg[] = $derived(filterApps(input));
 
   function filterApps(search: string) {
     return apps.filter(
       (app) =>
-        app.name.toLowerCase().includes(search) ||
-        app.display_name.toLowerCase().includes(search),
+        app.pname.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search),
     );
   }
+
+  function searchNixpkgs(query: string) {}
 
   // onEnterPressed: () => void }
   export function onEnterPressed() {
     launchApp(filteredApps[0]);
   }
 
-  async function launchApp(app: AppDetails) {
+  async function launchApp(app: Nixpkg) {
     // open(app.commandline, "xdg-open,");
-    console.log(app);
-    let result = await Command.create("exec-sh", [
-      "-c",
-      app.commandline,
-    ]).execute();
-    console.log(result);
+    // console.log(app);
+    // let result = await Command.create("exec-sh", [
+    //   "-c",
+    //   app.commandline,
+    // ]).execute();
+    // console.log(result);
   }
-  onMount(() => {
-    // invoke<AppDetails[]>("get_apps")
-    cmds
-      .getApps()
-      .then((e) => {
-        console.log(e);
-        apps = e;
-      })
-      .catch(console.error);
+
+  onMount(async () => {
+    let json = await Command.create("exec-sh", [
+      "-c",
+      "nix search nixpkgs ^ --json",
+    ]).execute();
+
+    const pkgs = JSON.parse(json.stdout) as Record<string, Nixpkg>;
+
+    nixpkgs = pkgs;
+    apps = Object.values(pkgs);
   });
-  // import { appState } from "$lib/launcher/apps.svelte";
 </script>
 
 <div class="app-list">
   {#each filteredApps || [] as app, i (i)}
     <button class="app-item" onclick={() => launchApp(app)}>
-      <span class="app-name">{app.name}</span>
+      <span class="app-name">{app.pname}</span>
       {#if app.description}
         <span class="app-desktop">{app.description}</span>
       {/if}

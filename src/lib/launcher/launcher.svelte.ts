@@ -1,9 +1,8 @@
+import type { LauncherPlugin, LauncherStateConfig, LauncherPluginComponentProps } from './types';
 import type { Component } from 'svelte';
 import Help from './Help.svelte';
-import AppsList from './AppsList.svelte';
-import DisksInfo from './DisksInfo.svelte';
-import BatteryInfo from './BatteryInfo.svelte';
-import type { LauncherPlugin, LauncherStateConfig, LauncherPluginComponentProps } from './types';
+import AppsList from './plugins/AppsList.svelte';
+import NixPkgs from './plugins/NixPkgs.svelte';
 
 
 
@@ -11,6 +10,7 @@ import type { LauncherPlugin, LauncherStateConfig, LauncherPluginComponentProps 
 
 class LauncherState {
   input = $state("")
+  search = $derived(this.getSearch())
   inputRef = $state<HTMLInputElement | null>(null)
 
   command: Component<LauncherPluginComponentProps> = $derived(this.getCommand())
@@ -35,6 +35,19 @@ class LauncherState {
     // return Help
     return AppsList
   }
+  getSearch() {
+    if (!this.input.startsWith(":")) {
+      return this.input
+    }
+    for (const { prefix } of this.plugins) {
+      if (this.input.startsWith(prefix)) {
+        this.hasPrefix = true
+        return this.input.replace(prefix, "")
+      }
+    }
+
+    return this.input
+  }
 
   clearInput() {
     this.input = ""
@@ -47,11 +60,11 @@ export const appState = new LauncherState({
     description: "System Apps",
     prefix: ":app"
   },
-    // {
-    //   component: DisksInfo,
-    //   description: "Disk Information",
-    //   prefix: ":disk"
-    // },
+  {
+    component: NixPkgs,
+    description: "Nix Pkgs Search",
+    prefix: ":nx"
+  },
     // {
     //   component: BatteryInfo,
     //   description: "Battery Information",

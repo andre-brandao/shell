@@ -24,8 +24,11 @@
       </button>
     </div>
     <div class="nav-right">
-      <button class="nav-btn config-btn" onclick={() => goto("/app/dev")}>
-        dev
+      <button class="nav-btn config-btn" onclick={() => goto("/app/battery")}>
+        battery
+      </button>
+      <button class="nav-btn config-btn" onclick={() => goto("/app/disks")}>
+        disks
       </button>
       <button class="nav-btn config-btn" onclick={() => goto("/app/settings")}>
         config
