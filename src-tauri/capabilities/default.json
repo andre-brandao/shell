@@ -17,6 +17,23 @@
     "core:window:allow-set-always-on-top",
     "opener:default",
     "opener:allow-open-path",
-    "fs:default"
+    "fs:default",
+    "shell:default",
+    {
+      "identifier": "shell:allow-execute",
+      "allow": [
+        {
+          "name": "exec-sh",
+          "cmd": "sh",
+          "args": [
+            "-c",
+            {
+              "validator": ".*"
+            }
+          ]
+        }
+      ]
+    },
+    "shell:allow-spawn"
   ]
 }

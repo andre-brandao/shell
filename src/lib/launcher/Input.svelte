@@ -55,6 +55,7 @@
 
   .search-input {
     width: 100%;
+    min-height: 30px;
     padding: 0;
     color: white;
     font-size: 16px;
@@ -75,7 +76,7 @@
 
   .clear-btn {
     position: absolute;
-    /* right: 50px; */
+    right: 20px;
     top: 50%;
     transform: translateY(-50%);
     background: transparent;

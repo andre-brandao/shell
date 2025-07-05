@@ -444,6 +444,12 @@
     url = "https://registry.npmjs.org/@tauri-apps/plugin-os/-/plugin-os-2.3.0.tgz";
     hash = "sha512-dm3bDsMuUngpIQdJ1jaMkMfyQpHyDcaTIKTFaAMHoKeUd+Is3UHO2uzhElr6ZZkfytIIyQtSVnCWdW2Kc58f3g==";
   };
+  "@tauri-apps/plugin-shell" = {
+    out_path = "@tauri-apps/plugin-shell";
+    name = "@tauri-apps/plugin-shell@2.3.0";
+    url = "https://registry.npmjs.org/@tauri-apps/plugin-shell/-/plugin-shell-2.3.0.tgz";
+    hash = "sha512-6GIRxO2z64uxPX4CCTuhQzefvCC0ew7HjdBhMALiGw74vFBDY95VWueAHOHgNOMV4UOUAFupyidN9YulTe5xlA==";
+  };
   "@types/cookie" = {
     out_path = "@types/cookie";
     name = "@types/cookie@0.6.0";

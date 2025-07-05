@@ -3,7 +3,8 @@
   import { invoke } from "@tauri-apps/api/core";
   import type { LauncherPluginComponentProps } from "./types";
   import { onMount } from "svelte";
-
+  import * as cmds from "$lib/cmds";
+  import { Command, open } from "@tauri-apps/plugin-shell";
   let { input }: LauncherPluginComponentProps = $props();
 
   let apps: AppDetails[] = $state([]);
@@ -18,11 +19,23 @@
   }
 
   // onEnterPressed: () => void }
-  export function onEnterPressed() {}
+  export function onEnterPressed() {
+    launchApp(filteredApps[0]);
+  }
 
-  function launchApp(app: AppDetails) {}
+  async function launchApp(app: AppDetails) {
+    // open(app.commandline, "xdg-open,");
+    console.log(app);
+    let result = await Command.create("exec-sh", [
+      "-c",
+      app.commandline,
+    ]).execute();
+    console.log(result);
+  }
   onMount(() => {
-    invoke<AppDetails[]>("get_apps")
+    // invoke<AppDetails[]>("get_apps")
+    cmds
+      .getApps()
       .then((e) => {
         console.log(e);
         apps = e;
