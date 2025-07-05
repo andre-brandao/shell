@@ -40,12 +40,14 @@ pub fn run() {
         cmds::hyprland::hypr_keyboards,
         cmds::hyprland::hypr_monitors,
         cmds::hyprland::hypr_workspaces,
+        // -- WIN --
         cmds::windows::toggle_launcher,
+        // -- SYSINFO --
         cmds::sysinfo::get_battery_info,
         cmds::sysinfo::get_system_info,
         cmds::sysinfo::get_disk_info,
+        cmds::sysinfo::get_network_info,
         // commands::get_apps,
-        cmds::menu::show_context_menu,
         cmds::application::get_apps // toggle_launcher,
     ]);
 

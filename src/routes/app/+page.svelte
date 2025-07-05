@@ -1,32 +1,25 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { appState } from "$lib/launcher/apps.svelte";
+  import { appState } from "$lib/launcher/launcher.svelte";
   import AppsList from "$lib/launcher/AppsList.svelte";
   import Help from "$lib/launcher/Help.svelte";
   import Input from "$lib/launcher/Input.svelte";
   import BatteryInfo from "$lib/launcher/BatteryInfo.svelte";
   import DisksInfo from "$lib/launcher/DisksInfo.svelte";
 
-  onMount(() => {
-    // Initialize the app state when the component mounts
-    appState.getApps();
-  });
+  // onMount(() => {
+  //   // Initialize the app state when the component mounts
+  //   appState.getApps();
+  // });
+  $inspect(appState.command);
 </script>
 
 <div class="app-launcher" role="application">
   <Input />
   <div class="content-area">
-    {#if appState.command === "search"}
-      <AppsList />
-    {:else if appState.command === "help"}
-      <Help />
-    {:else if appState.command === "battery"}
-      <BatteryInfo />
-    {:else if appState.command === "disk"}
-      <DisksInfo />
-    {:else}
-      <Help />
-    {/if}
+    {#key appState.command}
+      <appState.command input={appState.input} />
+    {/key}
   </div>
 </div>
 

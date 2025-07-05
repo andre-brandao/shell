@@ -1,3 +1,5 @@
+import type { Component } from "svelte";
+
 type AppDetails = {
   id: string;
   name: string;

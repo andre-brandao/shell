@@ -1,5 +1,7 @@
+import { changeWorkpace } from "$lib/cmds";
+import type { Workspaces } from "$lib/types";
 import { createKeyedWatcher } from "./whatcher.svelte";
-import { invoke } from "@tauri-apps/api/core";
+// import { invoke } from "@tauri-apps/api/core";
 import { listen, type UnlistenFn, type Event } from "@tauri-apps/api/event";
 
 
@@ -24,12 +26,7 @@ function mkWorkspaces() {
       watcher.watch(setupActiveClient);
       return workspace;
     },
-
-    async changeWorkspace(id: Workspaces["id"]) {
-      invoke("change_workspace", { workspace: id + 1 })
-        .then(console.log)
-        .catch(console.error)
-    }
+    changeWorkpace,
   };
 }
 

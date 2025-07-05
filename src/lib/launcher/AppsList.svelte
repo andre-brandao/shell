@@ -1,10 +1,40 @@
 <script lang="ts">
-  import { appState } from "$lib/launcher/apps.svelte";
+  import type { AppDetails } from "$lib/types";
+  import { invoke } from "@tauri-apps/api/core";
+  import type { LauncherPluginComponentProps } from "./types";
+  import { onMount } from "svelte";
+
+  let { input }: LauncherPluginComponentProps = $props();
+
+  let apps: AppDetails[] = $state([]);
+  let filteredApps: AppDetails[] = $derived(filterApps(input));
+
+  function filterApps(search: string) {
+    return apps.filter(
+      (app) =>
+        app.name.toLowerCase().includes(search) ||
+        app.display_name.toLowerCase().includes(search),
+    );
+  }
+
+  // onEnterPressed: () => void }
+  export function onEnterPressed() {}
+
+  function launchApp(app: AppDetails) {}
+  onMount(() => {
+    invoke<AppDetails[]>("get_apps")
+      .then((e) => {
+        console.log(e);
+        apps = e;
+      })
+      .catch(console.error);
+  });
+  // import { appState } from "$lib/launcher/apps.svelte";
 </script>
 
 <div class="app-list">
-  {#each appState.filteredApps || [] as app, i (i)}
-    <button class="app-item" onclick={() => appState.launchApp(app)}>
+  {#each filteredApps || [] as app, i (i)}
+    <button class="app-item" onclick={() => launchApp(app)}>
       <span class="app-name">{app.name}</span>
       {#if app.description}
         <span class="app-desktop">{app.description}</span>
@@ -12,7 +42,7 @@
     </button>
   {:else}
     <div class="no-apps">
-      {appState.search ? "No apps found" : "Loading apps..."}
+      {input ? "No apps found" : "Loading apps..."}
     </div>
   {/each}
 </div>

@@ -1,6 +1,10 @@
+import type { Battery, Disk, SysInfo } from "$lib/types";
 import { createKeyedWatcher } from "./whatcher.svelte";
-import { invoke } from "@tauri-apps/api/core";
-import { listen, type UnlistenFn, type Event } from "@tauri-apps/api/event";
+// import { invoke } from "@tauri-apps/api/core";
+// import { listen, type UnlistenFn, type Event } from "@tauri-apps/api/event";
+
+import * as cmds from "$lib/cmds"
+
 const INTERVAL = 10000; // 1 second
 
 function mkSysInfo() {
@@ -25,7 +29,8 @@ function mkSysInfo() {
   });
 
   const getSystemInfo = () => {
-    invoke<SysInfo>("get_system_info")
+    // invoke<SysInfo>("get_system_info")
+    cmds.getSystemInfo()
       .then((e) => {
         console.log(e);
         sysInfo.cpu_usage = e.cpu_usage ?? 0;
@@ -57,7 +62,8 @@ function mkDiskInfo() {
 
 
   const getDiskInfo = () => {
-    invoke<any>("get_disk_info")
+    // invoke<any>("get_disk_info")
+    cmds.getDisksInfo()
       .then((e) => {
         console.log(e);
 
@@ -99,7 +105,8 @@ function mkBatteryInfo() {
 
   const getBatteryInfo = () => {
 
-    invoke<Battery>("get_battery_info")
+    // invoke<Battery>("get_battery_info")
+    cmds.getBatteryInfo()
       .then((e) => {
         if (!e) return
         value = e

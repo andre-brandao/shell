@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { appState } from "$lib/launcher/apps.svelte";
+  import { appState } from "$lib/launcher/launcher.svelte";
 </script>
 
 <div
@@ -13,20 +13,20 @@
     //   appState.command = "help";
     // }
   }}
-  onclick={() => appState.searchInput?.focus()}
+  onclick={() => appState.inputRef?.focus()}
 >
   <input
-    bind:this={appState.searchInput}
-    bind:value={appState.search}
+    bind:value={appState.input}
+    bind:this={appState.inputRef}
     type="text"
     placeholder="Search apps..."
     class="search-input"
   />
-  {#if appState.search}
+  {#if appState.input}
     <button
       class="clear-btn"
       aria-label="Clear search"
-      onclick={() => appState.clearSearch()}
+      onclick={() => appState.clearInput()}
     >
       <svg
         width="16"
