@@ -1,12 +1,23 @@
 <script lang="ts">
   import type { AppDetails } from "$lib/types";
   import { invoke } from "@tauri-apps/api/core";
-  import type { LauncherPluginComponentProps } from "../types";
+  import type {
+    LauncherPluginComponentProps,
+    LauncherPluginExports,
+  } from "../types";
   import { onMount } from "svelte";
   import * as cmds from "$lib/cmds";
   import { Command, open } from "@tauri-apps/plugin-shell";
   let { input }: LauncherPluginComponentProps = $props();
-
+  export const { onEnterPressed, onInputChanged }: LauncherPluginExports = {
+    onEnterPressed() {
+      console.log("Enter Pressed");
+      launchApp(filteredApps[0]);
+    },
+    onInputChanged(value) {
+      console.log("input changed", value);
+    },
+  };
   let apps: AppDetails[] = $state([]);
   let filteredApps: AppDetails[] = $derived(filterApps(input));
 
@@ -18,10 +29,10 @@
     );
   }
 
-  export function onEnterPressed() {
-    console.log("Enter Pressed");
-    launchApp(filteredApps[0]);
-  }
+  // export function onEnterPressed() {
+  //   console.log("Enter Pressed");
+  //   launchApp(filteredApps[0]);
+  // }
 
   async function launchApp(app: AppDetails) {
     // open(app.commandline, "xdg-open,");

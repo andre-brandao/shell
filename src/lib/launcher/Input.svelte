@@ -23,10 +23,10 @@
   <input
     bind:value={appState.input}
     bind:this={appState.inputRef}
-    onchange={() => onChange?.(appState.input)}
     type="text"
     placeholder="Search apps..."
     class="search-input"
+    onkeydown={() => onChange?.(appState.input)}
   />
   {#if appState.input}
     <button

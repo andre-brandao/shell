@@ -1,16 +1,29 @@
 <script lang="ts">
-  import type { LauncherPluginComponentProps } from "../types";
+  // <!--  -->
+  import type {
+    LauncherPluginComponentProps,
+    LauncherPluginExports,
+  } from "../types";
   import { onMount } from "svelte";
   import * as cmds from "$lib/cmds";
   import { Command, open } from "@tauri-apps/plugin-shell";
-  let { input }: LauncherPluginComponentProps = $props();
-
+  import { debounce } from "$lib/utils";
   const PREFIX = "legacyPackages.x86_64-linux.";
-
   type Nixpkg = {
     description: string;
     pname: string;
     version: string;
+  };
+  //
+  let { input }: LauncherPluginComponentProps = $props();
+  export const { onEnterPressed, onInputChanged }: LauncherPluginExports = {
+    onEnterPressed() {
+      console.log("Enter Pressed");
+      launchApp(filteredApps[0]);
+    },
+    onInputChanged(value) {
+      debouncedSearchPkgs(value);
+    },
   };
   let apps: Nixpkg[] = $state([]);
   let nixpkgs: Record<string, Nixpkg> = $state({});
@@ -25,24 +38,15 @@
     );
   }
 
-  function searchNixpkgs(query: string) {}
-
-  // onEnterPressed: () => void }
-  export function onEnterPressed() {
-    launchApp(filteredApps[0]);
-  }
-
   async function launchApp(app: Nixpkg) {
-    // open(app.commandline, "xdg-open,");
-    // console.log(app);
-    // let result = await Command.create("exec-sh", [
-    //   "-c",
-    //   app.commandline,
-    // ]).execute();
-    // console.log(result);
+    let result = await Command.create("exec-sh", [
+      "-c",
+      `nix run nixpkgs#${app}`,
+    ]).execute();
+    console.log(result);
   }
 
-  onMount(async () => {
+  async function searchNixpkgs(query: string = "") {
     let json = await Command.create("exec-sh", [
       "-c",
       "nix search nixpkgs ^ --json",
@@ -52,6 +56,10 @@
 
     nixpkgs = pkgs;
     apps = Object.values(pkgs);
+  }
+  const debouncedSearchPkgs = debounce(searchNixpkgs, 450);
+  onMount(async () => {
+    searchNixpkgs();
   });
 </script>
 
