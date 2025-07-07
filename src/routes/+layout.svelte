@@ -6,3 +6,8 @@
 </script>
 
 {@render children()}
+
+<style>
+  :global {
+  }
+</style>

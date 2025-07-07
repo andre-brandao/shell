@@ -28,8 +28,8 @@
   }
 
   onMount(() => {
-    cmds
-      .getApps()
+    cmds.sysinfo.apps
+      .get()
       .then((e) => {
         console.log(e);
         apps = e;
@@ -57,6 +57,9 @@
 <style>
   .app-list {
     padding: 8px 0;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 
   .no-apps {

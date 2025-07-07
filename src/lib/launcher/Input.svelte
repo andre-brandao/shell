@@ -72,6 +72,8 @@
     /* height: 48px; */
     padding: 0;
     padding-right: 32px;
+    padding-left: 8px;
+
     color: white;
     font-size: 16px;
     background-color: transparent;

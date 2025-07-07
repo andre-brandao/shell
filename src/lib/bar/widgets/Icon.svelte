@@ -18,7 +18,7 @@
   }}
 >
   <span class="icon">
-    <img src="/svelte.svg" alt="" height="20px" />
+    <img src="/nix-snowflake-colours.svg" alt="" height="20px" />
   </span>
 </button>
 
