@@ -221,13 +221,14 @@
     font-size: 14px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
     gap: 16px;
     width: 100%;
     max-width: 100%;
     border-radius: 8px;
     transition: all 0.2s ease;
     box-sizing: border-box;
+    min-height: 130px;
   }
 
   .app-item:hover {
@@ -238,28 +239,30 @@
   .app-content {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
     flex: 1;
     min-width: 0;
     overflow: hidden;
+    justify-content: flex-start;
   }
 
   .app-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     gap: 12px;
     min-width: 0;
+    flex-shrink: 0;
   }
 
   .app-name {
     font-weight: 600;
     color: #ffffff;
     font-size: 16px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     min-width: 0;
+    flex: 1;
+    word-break: break-word;
+    line-height: 1.2;
   }
 
   .app-version {
@@ -271,6 +274,7 @@
     border-radius: 4px;
     flex-shrink: 0;
     white-space: nowrap;
+    align-self: flex-start;
   }
 
   .app-attr-name {
@@ -278,9 +282,9 @@
     color: #64d2ff;
     font-weight: 500;
     font-family: "SF Mono", "Monaco", "Inconsolata", "Fira Code", monospace;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    word-break: break-all;
+    line-height: 1.3;
+    flex-shrink: 0;
   }
 
   .app-description {
@@ -289,8 +293,12 @@
     font-weight: 400;
     line-height: 1.4;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    max-height: calc(1.4em * 2);
+    flex-grow: 1;
+    min-height: calc(1.4em * 2);
   }
 
   .app-meta {
@@ -300,6 +308,10 @@
     font-size: 11px;
     color: #8e8e93;
     overflow: hidden;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+    margin-top: auto;
+    padding-top: 4px;
   }
 
   .app-homepage {
@@ -360,6 +372,10 @@
     gap: 4px;
     flex-shrink: 0;
     white-space: nowrap;
+    align-self: flex-start;
+    height: 32px;
+    min-width: 64px;
+    justify-content: center;
   }
 
   .run-button:hover {
