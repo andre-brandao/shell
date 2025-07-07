@@ -1,5 +1,12 @@
 <script lang="ts">
   import { appState } from "$lib/launcher/launcher.svelte";
+
+  type Props = {
+    onChange?: (value: string) => void | Promise<void>;
+    onEnterPresed?: () => void | Promise<void>;
+  };
+
+  let { onChange, onEnterPresed }: Props = $props();
 </script>
 
 <div
@@ -7,17 +14,16 @@
   role="searchbox"
   tabindex="0"
   onkeydown={(e) => {
-    // if (e.key === "Enter") {
-    //   appState.command = "search";
-    // } else if (e.key === "Escape") {
-    //   appState.command = "help";
-    // }
+    if (e.key === "Enter") {
+      onEnterPresed?.();
+    }
   }}
   onclick={() => appState.inputRef?.focus()}
 >
   <input
     bind:value={appState.input}
     bind:this={appState.inputRef}
+    onchange={() => onChange?.(appState.input)}
     type="text"
     placeholder="Search apps..."
     class="search-input"
@@ -51,6 +57,7 @@
     padding: 16px 16px 16px 16px;
     border-bottom: 1px solid #3a3a3c;
     cursor: text;
+    min-height: 30px;
   }
 
   .search-input {

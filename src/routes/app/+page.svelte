@@ -1,19 +1,31 @@
 <script lang="ts">
   import { appState } from "$lib/launcher/launcher.svelte";
   import Input from "$lib/launcher/Input.svelte";
+  import type {
+    LauncherComponent,
+    LauncherPluginComponentProps,
+    LauncherPluginExports,
+  } from "$lib/launcher/types";
+  import Help from "$lib/launcher/plugins/Help.svelte";
+  import type { Component } from "svelte";
 
   // onMount(() => {
   //   // Initialize the app state when the component mounts
   //   appState.getApps();
   // });
+
+  let commandRef: ReturnType<LauncherComponent> | undefined = $state();
   $inspect(appState.command);
 </script>
 
 <div class="app-launcher" role="application">
-  <Input />
+  <Input
+    onChange={(e) => commandRef?.onInputChanged?.(e)}
+    onEnterPresed={() => commandRef?.onEnterPressed?.()}
+  />
   <div class="content-area">
     {#key appState.command}
-      <appState.command input={appState.search} />
+      <appState.command bind:this={commandRef} input={appState.search} />
     {/key}
   </div>
 </div>

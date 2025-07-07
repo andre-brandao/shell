@@ -1,6 +1,6 @@
-import type { LauncherPlugin, LauncherStateConfig, LauncherPluginComponentProps } from './types';
+import type { LauncherPlugin, LauncherStateConfig, LauncherPluginComponentProps, LauncherComponent, LauncherPluginExports } from './types';
 import type { Component } from 'svelte';
-import Help from './Help.svelte';
+import Help from './plugins/Help.svelte';
 import AppsList from './plugins/AppsList.svelte';
 import NixPkgs from './plugins/NixPkgs.svelte';
 
@@ -13,7 +13,7 @@ class LauncherState {
   search = $derived(this.getSearch())
   inputRef = $state<HTMLInputElement | null>(null)
 
-  command: Component<LauncherPluginComponentProps> = $derived(this.getCommand())
+  command: LauncherComponent = $derived(this.getCommand())
   hasPrefix = $state(false)
 
   plugins: LauncherPlugin[]
@@ -21,7 +21,7 @@ class LauncherState {
     this.plugins = plugins
   }
 
-  getCommand(): Component<LauncherPluginComponentProps> {
+  getCommand(): LauncherComponent {
     if (!this.input.startsWith(":")) {
       return AppsList
     }
@@ -33,7 +33,7 @@ class LauncherState {
     }
     this.hasPrefix = false
     // return Help
-    return AppsList
+    return Help
   }
   getSearch() {
     if (!this.input.startsWith(":")) {

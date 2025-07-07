@@ -13,7 +13,7 @@
     <button
       class="workspace"
       class:active={isActive}
-      onclick={() => workspace.changeWorkspace(i)}
+      onclick={() => workspace.changeWorkpace(i)}
     >
       {isActive ? "_" : w}
     </button>
@@ -21,13 +21,6 @@
 </div>
 
 <style>
-  button {
-    border: none;
-    padding: 0;
-    background: none;
-    cursor: pointer;
-    outline: none;
-  }
   .workspaces-widget {
     display: flex;
     gap: 4px;

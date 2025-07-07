@@ -18,19 +18,19 @@
     );
   }
 
-  // onEnterPressed: () => void }
   export function onEnterPressed() {
+    console.log("Enter Pressed");
     launchApp(filteredApps[0]);
   }
 
   async function launchApp(app: AppDetails) {
     // open(app.commandline, "xdg-open,");
+
     console.log(app);
     let result = await Command.create("exec-sh", [
       "-c",
       app.commandline,
     ]).execute();
-    console.log(result);
   }
   onMount(() => {
     // invoke<AppDetails[]>("get_apps")
