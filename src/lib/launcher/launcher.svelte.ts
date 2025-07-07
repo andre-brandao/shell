@@ -1,8 +1,8 @@
-import type { LauncherPlugin, LauncherStateConfig, LauncherPluginComponentProps, LauncherComponent, LauncherPluginExports } from './types';
+import type { LauncherPlugin, LauncherStateConfig, LauncherPluginProps, LauncherComponent, LauncherPluginExports } from './plugins/types';
 import type { Component } from 'svelte';
 import Help from './plugins/Help.svelte';
-import AppsList from './plugins/AppsList.svelte';
-import NixPkgs from './plugins/NixPkgs.svelte';
+import Apps from './plugins/apps/Plugin.svelte';
+import NixPkgs from './plugins/nixpkgs/Plugin.svelte';
 
 
 
@@ -23,7 +23,7 @@ class LauncherState {
 
   getCommand(): LauncherComponent {
     if (!this.input.startsWith(":")) {
-      return AppsList
+      return Apps
     }
     for (const { prefix, component } of this.plugins) {
       if (this.input.startsWith(prefix)) {
@@ -56,7 +56,7 @@ class LauncherState {
 
 export const appState = new LauncherState({
   plugins: [{
-    component: AppsList,
+    component: Apps,
     description: "System Apps",
     prefix: ":app"
   },
@@ -65,16 +65,5 @@ export const appState = new LauncherState({
     description: "Nix Pkgs Search",
     prefix: ":nx"
   },
-    // {
-    //   component: BatteryInfo,
-    //   description: "Battery Information",
-    //   prefix: ":bat"
-    // },
-    // {
-    //   component: Help,
-    //   description: "Help",
-    //   prefix: ":help"
-    // }
-
   ]
 });

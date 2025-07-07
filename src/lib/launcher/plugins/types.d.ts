@@ -1,13 +1,13 @@
 import type { Component, ComponentProps } from "svelte"
 
-export type LauncherPluginComponentProps = { input: string }
+export type LauncherPluginProps = { input: string }
 
 export type LauncherPluginExports = {
   onEnterPressed?: () => void | Promise<void>
   onInputChanged?: (input: string) => void | Promise<void>
 }
 
-export type LauncherComponent = Component<LauncherPluginComponentProps, LauncherPluginExports>
+export type LauncherComponent = Component<LauncherPluginProps, LauncherPluginExports>
 
 export type LauncherPlugin = {
   prefix: `:${string}`
