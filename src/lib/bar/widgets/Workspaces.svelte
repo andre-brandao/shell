@@ -1,8 +1,5 @@
 <script lang="ts">
   import { workspace } from "$lib/state/workspaces.svelte";
-  import { invoke } from "@tauri-apps/api/core";
-  import { listen, type UnlistenFn, type Event } from "@tauri-apps/api/event";
-  import { onDestroy, onMount } from "svelte";
 
   let workspaces = $state<number[]>(new Array(10).fill(0).map((_, i) => i + 1));
 </script>

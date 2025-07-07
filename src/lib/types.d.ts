@@ -110,3 +110,26 @@ type HyprClient = {
   };
   xwayland: boolean
 }
+
+
+type HyprWorkspace = {
+  id: number
+  name: string
+  monitor: string
+  monitor_id: number
+  windows: number
+  fullscreen: boolean
+  last_window_title: string
+}
+
+// type HyprMonitor = {
+//   id: number
+//   name: string
+//   description: string
+//   width: number
+//   height: number
+//   refresh_rate: number
+//   x: number
+//   y: number
+
+// }

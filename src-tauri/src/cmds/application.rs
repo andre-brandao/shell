@@ -18,7 +18,6 @@ pub fn get_apps() -> Vec<AppDetails> {
     // let info_monitor = gio::AppInfoMonitor::get();
     // let info = gio::DesktopAppInfo::
     let info = gio::AppInfo::all();
-
     let mut apps = Vec::new();
 
     for app in info {

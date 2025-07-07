@@ -1,4 +1,4 @@
-import { changeWorkpace } from "$lib/cmds";
+import { hyprland } from "$lib/cmds";
 import type { Workspaces } from "$lib/types";
 import { createKeyedWatcher } from "./whatcher.svelte";
 // import { invoke } from "@tauri-apps/api/core";
@@ -26,7 +26,7 @@ function mkWorkspaces() {
       watcher.watch(setupActiveClient);
       return workspace;
     },
-    changeWorkpace,
+    changeWorkpace: hyprland.workspace.changeTo,
   };
 }
 
