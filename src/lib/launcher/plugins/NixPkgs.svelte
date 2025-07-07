@@ -8,72 +8,129 @@
   import * as cmds from "$lib/cmds";
   import { Command, open } from "@tauri-apps/plugin-shell";
   import { debounce } from "$lib/utils";
-  const PREFIX = "legacyPackages.x86_64-linux.";
-  type Nixpkg = {
-    description: string;
-    pname: string;
-    version: string;
+
+  type NhSearchResult = {
+    package_attr_name: string;
+    package_attr_set: string;
+    package_pname: string;
+    package_pversion: string;
+    package_platforms: string[];
+    package_outputs: string[];
+    package_default_output: string;
+    package_programs: string[];
+    package_license_set: string[];
+    package_description: string;
+    package_longDescription: string | null;
+    package_hydra: string | null;
+    package_system: string;
+    package_homepage: string[];
+    package_position: string;
   };
+
+  type NhSearchResponse = {
+    query: string;
+    channel: string;
+    elapsed_ms: number;
+    results: NhSearchResult[];
+  };
+
   //
   let { input }: LauncherPluginComponentProps = $props();
   export const { onEnterPressed, onInputChanged }: LauncherPluginExports = {
     onEnterPressed() {
       console.log("Enter Pressed");
-      launchApp(filteredApps[0]);
+      // launchApp(filteredApps[0]);
     },
     onInputChanged(value) {
       debouncedSearchPkgs(value);
     },
   };
-  let apps: Nixpkg[] = $state([]);
-  let nixpkgs: Record<string, Nixpkg> = $state({});
 
-  let filteredApps: Nixpkg[] = $derived(filterApps(input));
+  let apps: NhSearchResult[] = $state([]);
+  let isLoading: boolean = $state(false);
+
+  let filteredApps: NhSearchResult[] = $derived(filterApps(input));
 
   function filterApps(search: string) {
+    if (!search.trim()) return apps;
+
     return apps.filter(
       (app) =>
-        app.pname.toLowerCase().includes(search) ||
-        app.description.toLowerCase().includes(search),
+        app.package_pname.toLowerCase().includes(search.toLowerCase()) ||
+        app.package_description.toLowerCase().includes(search.toLowerCase()) ||
+        app.package_attr_name.toLowerCase().includes(search.toLowerCase()),
     );
   }
 
-  async function launchApp(app: Nixpkg) {
+  async function launchApp(app: NhSearchResult) {
     let result = await Command.create("exec-sh", [
       "-c",
-      `nix run nixpkgs#${app}`,
+      `nix run nixpkgs#${app.package_attr_name}`,
     ]).execute();
     console.log(result);
   }
 
   async function searchNixpkgs(query: string = "") {
-    let json = await Command.create("exec-sh", [
-      "-c",
-      "nix search nixpkgs ^ --json",
-    ]).execute();
+    if (!query.trim()) {
+      apps = [];
+      return;
+    }
 
-    const pkgs = JSON.parse(json.stdout) as Record<string, Nixpkg>;
+    isLoading = true;
 
-    nixpkgs = pkgs;
-    apps = Object.values(pkgs);
+    try {
+      let result = await Command.create("exec-sh", [
+        "-c",
+        `nh search --limit 10 --json "${query}"`,
+      ]).execute();
+      console.log(result);
+      const searchResponse = JSON.parse(result.stdout) as NhSearchResponse;
+      console.log(searchResponse.results);
+      apps = searchResponse.results;
+    } catch (error) {
+      console.error("Error searching nixpkgs:", error);
+      apps = [];
+    } finally {
+      isLoading = false;
+    }
   }
+
   const debouncedSearchPkgs = debounce(searchNixpkgs, 450);
+
   onMount(async () => {
-    searchNixpkgs();
+    // Don't search on mount, wait for user input
   });
 </script>
 
 <div class="app-list">
   {#each filteredApps || [] as app, i (i)}
     <button class="app-item" onclick={() => launchApp(app)}>
-      <span class="app-name">{app.pname}</span>
-      {#if app.description}
-        <span class="app-desktop">{app.description}</span>
+      <div class="app-header">
+        <span class="app-name">{app.package_pname}</span>
+        <span class="app-version">{app.package_pversion}</span>
+      </div>
+      <div class="app-attr-name">{app.package_attr_name}</div>
+      {#if app.package_description}
+        <div class="app-description">{app.package_description}</div>
       {/if}
+      <div class="app-meta">
+        {#if app.package_homepage?.length > 0}
+          <span class="app-homepage">🔗 Homepage</span>
+        {/if}
+        {#if app.package_license_set?.length > 0}
+          <span class="app-license">{app.package_license_set[0]}</span>
+        {/if}
+      </div>
     </button>
   {:else}
     <div class="no-apps">
-      {input ? "No apps found" : "Loading apps..."}
+      {#if isLoading}
+        Loading packages...
+      {:else if input}
+        No packages found for "{input}"
+      {:else}
+        Start typing to search for packages...
+      {/if}
     </div>
   {/each}
 </div>
@@ -82,11 +139,12 @@
   .app-list {
     padding: 8px 0;
   }
+
   .app-item {
     background: transparent;
     border: none;
     color: #ffffff;
-    padding: 12px 16px;
+    padding: 16px;
     cursor: pointer;
     font-family: inherit;
     font-size: 14px;
@@ -94,9 +152,11 @@
     transition: all 0.2s ease;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 8px;
     width: 100%;
     border-bottom: 1px solid #2c2c2e;
+    border-radius: 8px;
+    margin-bottom: 4px;
   }
 
   .app-item:hover {
@@ -107,15 +167,58 @@
     background-color: #3a3a3c;
   }
 
-  .app-name {
-    font-weight: 500;
-    color: #ffffff;
+  .app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
   }
 
-  .app-desktop {
+  .app-name {
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 16px;
+  }
+
+  .app-version {
     font-size: 12px;
     color: #8e8e93;
     font-weight: 400;
+    background: #2c2c2e;
+    padding: 2px 6px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .app-attr-name {
+    font-size: 12px;
+    color: #64d2ff;
+    font-weight: 500;
+    font-family: "SF Mono", "Monaco", "Inconsolata", "Fira Code", monospace;
+  }
+
+  .app-description {
+    font-size: 13px;
+    color: #a1a1a6;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  .app-meta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    font-size: 11px;
+    color: #8e8e93;
+  }
+
+  .app-homepage {
+    color: #64d2ff;
+    font-weight: 500;
+  }
+
+  .app-license {
+    color: #8e8e93;
   }
 
   .no-apps {

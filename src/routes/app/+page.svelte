@@ -15,7 +15,7 @@
   // });
 
   let commandRef: ReturnType<LauncherComponent> | undefined = $state();
-  $inspect(appState.command);
+  // $inspect(appState.command);
 </script>
 
 <div class="app-launcher" role="application">

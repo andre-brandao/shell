@@ -26,7 +26,7 @@
     type="text"
     placeholder="Search apps..."
     class="search-input"
-    onkeydown={() => onChange?.(appState.input)}
+    onkeydown={() => onChange?.(appState.search)}
   />
   {#if appState.input}
     <button
