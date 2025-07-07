@@ -44,7 +44,7 @@
     font-size: 12px;
   }
 
-  icon:hover {
+  .icon-widget:hover {
     transform: scale(0.9);
   }
 </style>

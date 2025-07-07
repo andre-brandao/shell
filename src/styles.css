@@ -1,12 +1,59 @@
-/* :global {
-  button {
-    border: none;
-    padding: 0;
-    background: none;
-    cursor: pointer;
-    outline: none;
-  }
-} */
+/* Global CSS Variables */
+:root {
+  /* Base Colors */
+  --base-100: #ffffff;
+  --base-200: #f8f9fa;
+  --base-300: #e9ecef;
+  --base-fg: #212529;
+
+  /* Primary Colors */
+  --primary-bg: #007bff;
+  --primary-fg: #ffffff;
+
+  /* Secondary Colors */
+  --secondary-bg: #6c757d;
+  --secondary-fg: #ffffff;
+
+  /* Additional Utility Colors */
+  --accent-bg: #28a745;
+  --accent-fg: #ffffff;
+
+  --warning-bg: #ffc107;
+  --warning-fg: #212529;
+
+  --error-bg: #dc3545;
+  --error-fg: #ffffff;
+
+  --info-bg: #17a2b8;
+  --info-fg: #ffffff;
+
+  /* Border & Shadow */
+  --border-color: #dee2e6;
+  --border-radius: 0.375rem;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 3rem;
+
+  /* Typography */
+  --font-family-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-family-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+}
+
 
 button {
   border: none;
@@ -14,4 +61,209 @@ button {
   background: none;
   cursor: pointer;
   outline: none;
+}
+
+.flex {
+  display: flex;
+}
+
+
+/* Utility Classes */
+.bg-base-100 {
+  background-color: var(--base-100);
+}
+
+.bg-base-200 {
+  background-color: var(--base-200);
+}
+
+.bg-base-300 {
+  background-color: var(--base-300);
+}
+
+.text-base-fg {
+  color: var(--base-fg);
+}
+
+.bg-primary {
+  background-color: var(--primary-bg);
+}
+
+.text-primary-fg {
+  color: var(--primary-fg);
+}
+
+.bg-secondary {
+  background-color: var(--secondary-bg);
+}
+
+.text-secondary-fg {
+  color: var(--secondary-fg);
+}
+
+.bg-accent {
+  background-color: var(--accent-bg);
+}
+
+.text-accent-fg {
+  color: var(--accent-fg);
+}
+
+.bg-warning {
+  background-color: var(--warning-bg);
+}
+
+.text-warning-fg {
+  color: var(--warning-fg);
+}
+
+.bg-error {
+  background-color: var(--error-bg);
+}
+
+.text-error-fg {
+  color: var(--error-fg);
+}
+
+.bg-info {
+  background-color: var(--info-bg);
+}
+
+.text-info-fg {
+  color: var(--info-fg);
+}
+
+/* Border Utilities */
+.border {
+  border: 1px solid var(--border-color);
+}
+
+.border-radius {
+  border-radius: var(--border-radius);
+}
+
+/* Shadow Utilities */
+.shadow-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.shadow-md {
+  box-shadow: var(--shadow-md);
+}
+
+.shadow-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+/* Spacing Utilities */
+.p-xs {
+  padding: var(--spacing-xs);
+}
+
+.p-sm {
+  padding: var(--spacing-sm);
+}
+
+.p-md {
+  padding: var(--spacing-md);
+}
+
+.p-lg {
+  padding: var(--spacing-lg);
+}
+
+.p-xl {
+  padding: var(--spacing-xl);
+}
+
+.m-xs {
+  margin: var(--spacing-xs);
+}
+
+.m-sm {
+  margin: var(--spacing-sm);
+}
+
+.m-md {
+  margin: var(--spacing-md);
+}
+
+.m-lg {
+  margin: var(--spacing-lg);
+}
+
+.m-xl {
+  margin: var(--spacing-xl);
+}
+
+/* Typography Utilities */
+.font-sans {
+  font-family: var(--font-family-sans);
+}
+
+.font-mono {
+  font-family: var(--font-family-mono);
+}
+
+.text-xs {
+  font-size: var(--font-size-xs);
+}
+
+.text-sm {
+  font-size: var(--font-size-sm);
+}
+
+.text-base {
+  font-size: var(--font-size-base);
+}
+
+.text-lg {
+  font-size: var(--font-size-lg);
+}
+
+.text-xl {
+  font-size: var(--font-size-xl);
+}
+
+.text-2xl {
+  font-size: var(--font-size-2xl);
+}
+
+.text-3xl {
+  font-size: var(--font-size-3xl);
+}
+
+.text-4xl {
+  font-size: var(--font-size-4xl);
+}
+
+/* Button Variants */
+.btn-primary {
+  background-color: var(--primary-bg);
+  color: var(--primary-fg);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  border: none;
+  font-family: var(--font-family-sans);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-bg);
+  color: var(--secondary-fg);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  border: none;
+  font-family: var(--font-family-sans);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--primary-bg);
+  border: 1px solid var(--primary-bg);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-family: var(--font-family-sans);
 }
