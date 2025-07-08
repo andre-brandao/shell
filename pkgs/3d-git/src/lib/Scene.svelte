@@ -50,15 +50,15 @@
 			}
 </script>
 
-<Grid
+<!-- <Grid
 	infiniteGrid
 	sectionColor="#4a4b4a"
 	sectionSize={20}
 	cellSize={20}
 	fadeDistance={400}
-/>
+/> -->
 
-<T.PerspectiveCamera makeDefault position={[10, 100, 100]} fov={60}>
+<T.PerspectiveCamera makeDefault position={[500, 100, 100]} fov={60} >
 	<OrbitControls enableDamping autoRotate />
 </T.PerspectiveCamera>
 

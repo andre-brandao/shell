@@ -34,6 +34,19 @@
         }
       ]
     },
-    "shell:allow-spawn"
+    "shell:allow-spawn",
+    {
+      "identifier": "http:default",
+      "allow": [
+        {
+          "url": "https://*"
+        }
+      ],
+      "deny": [
+        {
+          "url": "https://private.tauri.app"
+        }
+      ]
+    }
   ]
 }

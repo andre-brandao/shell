@@ -18,12 +18,13 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "@deds-shell/3d-git": "file:./pkgs/3d-git",
     "@tauri-apps/api": "^2",
     "@tauri-apps/plugin-fs": "~2",
+    "@tauri-apps/plugin-http": "~2",
     "@tauri-apps/plugin-opener": "^2",
     "@tauri-apps/plugin-os": "~2",
-    "@tauri-apps/plugin-shell": "~2",
-    "@deds-shell/3d-git": "file:./pkgs/3d-git"
+    "@tauri-apps/plugin-shell": "~2"
   },
   "devDependencies": {
     "@sveltejs/adapter-static": "^3.0.6",

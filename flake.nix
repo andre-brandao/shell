@@ -29,6 +29,7 @@
         packages.frontend= frontend-build;
 
         devShells.default = pkgs.mkShell {
+          GIO_MODULE_DIR="${pkgs.glib-networking}/lib/gio/modules/";
           nativeBuildInputs = with pkgs; [
             pkg-config
             gobject-introspection
@@ -50,6 +51,7 @@
             cairo
             gdk-pixbuf
             glib
+            glib-networking
             gtk3
             harfbuzz
             librsvg
