@@ -7,6 +7,7 @@ type AppDetails = {
   description: string;
   exec: string;
   commandline: string;
+  icon?: string
 }
 type ActiveClient = {
   class: string;

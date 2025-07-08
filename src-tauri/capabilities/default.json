@@ -47,6 +47,14 @@
           "url": "https://private.tauri.app"
         }
       ]
+    },
+    {
+      "identifier": "fs:scope",
+      "allow": [
+        {
+          "path": "**/*"
+        }
+      ]
     }
   ]
 }

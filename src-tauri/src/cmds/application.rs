@@ -1,3 +1,4 @@
+use gio::traits::IconExt;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use tauri::Manager;
@@ -10,6 +11,38 @@ pub struct AppDetails {
     description: String,
     exec: std::path::PathBuf,
     commandline: Option<std::path::PathBuf>,
+    icon: Option<String>,
+}
+
+fn get_icon_path(icon: &gio::Icon) -> Option<String> {
+    use gio::traits::IconExt;
+    use glib::Cast;
+    // Try to downcast to FileIcon first
+    if let Some(file_icon) = icon.downcast_ref::<gio::FileIcon>() {
+        use gio::prelude::FileExt;
+        let file = file_icon.file();
+
+        return file.path().and_then(|f| f.to_str().map(|s| s.to_string()));
+    }
+
+    if let Some(themed_icon) = icon.downcast_ref::<gio::ThemedIcon>() {
+        let names = themed_icon.names();
+        if let Some(name) = names.first() {
+            // Try to resolve the themed icon to an actual path
+            if let Some(icon_theme) = gtk::IconTheme::default() {
+                use gtk::prelude::IconThemeExt;
+                if let Some(icon_info) =
+                    icon_theme.lookup_icon(name, 48, gtk::IconLookupFlags::empty())
+                {
+                    return icon_info
+                        .filename()
+                        .and_then(|f| f.to_str().map(|s| s.to_string()));
+                }
+            }
+        }
+    }
+
+    None
 }
 
 #[tauri::command]
@@ -21,13 +54,8 @@ pub fn get_apps() -> Vec<AppDetails> {
     let mut apps = Vec::new();
 
     for app in info {
-        // let icon = match app.icon() {
-        //     Some(icon) => icon,
-        //     None => {
-        //         println!("App {} has no icon", app.name());
-        //         continue;
-        //     }
-        // };
+        let icon = app.icon().and_then(|icon| get_icon_path(&icon));
+
         let details = AppDetails {
             id: app
                 .id()
@@ -39,6 +67,7 @@ pub fn get_apps() -> Vec<AppDetails> {
                 .map_or_else(|| "".to_string(), |d| d.to_string()),
             exec: app.executable(),
             commandline: app.commandline(),
+            icon,
         };
 
         apps.push(details);

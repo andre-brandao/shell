@@ -7,8 +7,9 @@
   onMount(() => {
     data.win?.show().then(() => {
       data.win?.setFocus();
-      goto("/app");
+      // goto("/app");
     });
+    setTimeout(() => goto("/app"), 1000);
   });
 </script>
 
@@ -16,7 +17,7 @@
   <div class="splash-container">
     <div class="logo-section">
       <div class="logo-wrapper">
-        <img src="/favicon.png" alt="LOGO" class="logo" />
+        <img src="/nix-snowflake-colours.svg" alt="LOGO" class="logo" />
       </div>
       <h1 class="app-title">Deds Shell</h1>
       <p class="app-subtitle">System Application Launcher</p>
