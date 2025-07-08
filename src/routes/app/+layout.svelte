@@ -24,6 +24,12 @@
       </button>
     </div>
     <div class="nav-right">
+      <button
+        class="nav-btn config-btn"
+        onclick={() => goto("/app/gitskyline")}
+      >
+        git
+      </button>
       <button class="nav-btn config-btn" onclick={() => goto("/app/battery")}>
         battery
       </button>
