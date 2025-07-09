@@ -77,17 +77,16 @@
   :global(body) {
     margin: 0;
     padding: 0;
-    background-color: #1c1c1e;
-    color: #ffffff;
-    font-family:
-      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 14px;
+    background-color: var(--base-100);
+    color: var(--base-fg);
+    font-family: var(--font-family-sans);
+    font-size: var(--font-size-sm);
     line-height: 1.4;
   }
 
   main {
     min-height: 100vh;
-    background-color: #1c1c1e;
+    background-color: var(--base-100);
     display: flex;
     flex-direction: column;
   }
@@ -108,8 +107,8 @@
     justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
-    background-color: #2c2c2e;
-    border-top: 1px solid #3a3a3c; /* Changed from border-bottom to border-top */
+    background-color: var(--base-200);
+    border-top: 1px solid var(--base-300);
     z-index: 10;
   }
 
@@ -123,25 +122,25 @@
 
   .nav-btn {
     background: transparent;
-    border: 1px solid #48484a;
-    color: #ffffff;
+    border: 1px solid var(--secondary-bg);
+    color: var(--base-fg);
     padding: 6px 12px;
-    border-radius: 6px;
+    border-radius: var(--border-radius);
     cursor: pointer;
     font-family: inherit;
-    font-size: 13px;
+    font-size: var(--font-size-xs);
     font-weight: 500;
     transition: all 0.2s ease;
   }
 
   .nav-btn:hover:not(:disabled) {
-    background-color: #48484a;
-    border-color: #5a5a5c;
+    background-color: var(--secondary-bg);
+    border-color: var(--hover-bg);
   }
 
   .nav-btn:disabled {
     opacity: 0.4;
     cursor: not-allowed;
-    color: #8e8e93;
+    color: var(--disabled-fg);
   }
 </style>

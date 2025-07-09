@@ -1,7 +1,7 @@
 <script lang="ts">
   import { appState } from "$lib/launcher/launcher.svelte";
   import Input from "$lib/launcher/Input.svelte";
-  import type { LauncherComponent } from "$lib/launcher/types";
+  import type { LauncherComponent } from "$lib/launcher/plugins/types";
   import Help from "$lib/launcher/plugins/Help.svelte";
   import type { Component } from "svelte";
 
@@ -22,7 +22,7 @@
 
 <style>
   .app-launcher {
-    background-color: #1c1c1e;
+    background-color: var(--base-100);
     width: 100%;
     min-height: 500px; /* Add minimum height */
     display: flex;

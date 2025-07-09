@@ -1,18 +1,24 @@
 /* Global CSS Variables */
 :root {
-  /* Base Colors */
-  --base-100: #ffffff;
-  --base-200: #f8f9fa;
-  --base-300: #e9ecef;
-  --base-fg: #212529;
+  /* Base Colors - Dark Theme */
+  --base-100: #1c1c1e;
+  --base-200: #2c2c2e;
+  --base-300: #3a3a3c;
+  --base-fg: #ffffff;
+
+  --border: #000000;
 
   /* Primary Colors */
   --primary-bg: #007bff;
   --primary-fg: #ffffff;
 
   /* Secondary Colors */
-  --secondary-bg: #6c757d;
+  --secondary-bg: #48484a;
   --secondary-fg: #ffffff;
+
+  /* Hover and Disabled States */
+  --hover-bg: #5a5a5c;
+  --disabled-fg: #8e8e93;
 
   /* Additional Utility Colors */
   --accent-bg: #28a745;
@@ -28,7 +34,7 @@
   --info-fg: #ffffff;
 
   /* Border & Shadow */
-  --border-color: #dee2e6;
+  --border-color: #3a3a3c;
   --border-radius: 0.375rem;
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);

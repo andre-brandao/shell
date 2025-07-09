@@ -145,7 +145,7 @@ pub fn get_battery_info() -> Option<Value> {
 
 #[tauri::command]
 pub fn get_network_info() -> Option<Value> {
-    let mut networks = Networks::new();
+    let mut networks = Networks::new_with_refreshed_list();
     networks.refresh(true);
 
     // let networks = sys.networks();

@@ -9,6 +9,7 @@
     info = await sysinfo.network.get();
     timeoutId = setInterval(async () => {
       info = await sysinfo.network.get();
+      console.log(info);
     }, 3000);
   });
 
