@@ -33,21 +33,22 @@
     justify-content: center;
     font-size: 10px;
     font-weight: 600;
-    background-color: #48484a;
-    color: #8e8e93;
+    background-color: var(--secondary-bg);
+    color: var(--disabled-fg);
     transition: all 0.2s ease;
   }
 
   .workspace.active {
-    background-color: #007aff;
-    color: #ffffff;
+    background-color: var(--primary-bg);
+    color: var(--primary-fg);
   }
 
   .workspace:hover {
-    background-color: #5a5a5c;
+    background-color: var(--hover-bg);
   }
 
   .workspace.active:hover {
-    background-color: #0056cc;
+    background-color: var(--primary-bg);
+    filter: brightness(0.8);
   }
 </style>

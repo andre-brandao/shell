@@ -34,17 +34,16 @@
     justify-content: space-between;
     align-items: center;
     height: 30px;
-    background-color: #2c2c2e;
-    color: #ffffff;
+    background-color: var(--base-200);
+    color: var(--base-fg);
     padding: 0 12px;
     margin: 0;
     overflow: hidden;
     white-space: nowrap;
-    font-family:
-      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 12px;
+    font-family: var(--font-family-sans);
+    font-size: var(--font-size-xs);
     font-weight: 500;
-    border-bottom: 1px solid #3a3a3c;
+    border-bottom: 1px solid var(--base-300);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     position: relative;
@@ -96,7 +95,7 @@
     content: "";
     width: 1px;
     height: 16px;
-    background-color: #48484a;
+    background-color: var(--secondary-bg);
     margin-right: 8px;
   }
 
