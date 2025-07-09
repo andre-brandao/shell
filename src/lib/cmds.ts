@@ -1,5 +1,5 @@
 
-import type { AppDetails, Battery, Disk, SysInfo, Workspaces, HyprBinds, HyprClient, HyprAnimations, HyprWorkspace } from "$lib/types";
+import type { AppDetails, Battery, Disk, SysInfo, Workspaces, HyprBinds, HyprClient, HyprAnimations, HyprWorkspace, NetworkInfo } from "$lib/types";
 import { invoke } from "@tauri-apps/api/core";
 import { listen, type UnlistenFn, type Event } from "@tauri-apps/api/event";
 
@@ -15,6 +15,9 @@ export const sysinfo = {
   },
   apps: {
     get: () => invoke<AppDetails[]>("get_apps")
+  },
+  network: {
+    get: () => invoke<NetworkInfo>("get_network_info")
   }
 }
 export const hyprland = {

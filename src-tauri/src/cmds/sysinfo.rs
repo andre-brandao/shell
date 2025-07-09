@@ -160,7 +160,7 @@ pub fn get_network_info() -> Option<Value> {
         total_transmitted += transmitted;
 
         network_info.push(json!({
-            "interface": interface_name,
+            "name": interface_name,
             "received_bytes": received,
             "transmitted_bytes": transmitted,
             "packets_received": network.packets_received(),

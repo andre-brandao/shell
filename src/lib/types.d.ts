@@ -62,6 +62,21 @@ type Battery = {
   model_name: string;
   battery_index?: number;
 }
+type NetworkInterface = {
+  name: string
+  received_bytes: number
+  transmitted_bytes: number
+  packets_received: number
+  packets_transmitted: number
+  errors_on_received: number
+  errors_on_transmitted: number
+}
+type NetworkInfo = {
+  interfaces: NetworkInterface[]
+  total_received: number
+  total_transmitted: number
+  interface_count: number
+}
 
 type CommandState = "search" | "help" | "shell" | "rdp" | "ssh" | "battery" | "disk" | "htop" | "unknown";
 

@@ -6,6 +6,29 @@
   let { children } = $props();
 
   let isOnMainPage = $derived(page.route.id === "/app");
+
+  let extensions = [
+    {
+      label: "git",
+      path: "/app/gitskyline",
+    },
+    {
+      label: "battery",
+      path: "/app/battery",
+    },
+    {
+      path: "/app/disks",
+      label: "disk",
+    },
+    {
+      path: "/app/settings",
+      label: "settings",
+    },
+    {
+      path: "/app/network",
+      label: "net",
+    },
+  ];
 </script>
 
 <main>
@@ -24,7 +47,12 @@
       </button>
     </div>
     <div class="nav-right">
-      <button
+      {#each extensions as item, i (item)}
+        <button class="nav-btn config-btn" onclick={() => goto(item.path)}>
+          {item.label}
+        </button>
+      {/each}
+      <!-- <button
         class="nav-btn config-btn"
         onclick={() => goto("/app/gitskyline")}
       >
@@ -38,7 +66,7 @@
       </button>
       <button class="nav-btn config-btn" onclick={() => goto("/app/settings")}>
         config
-      </button>
+      </button> -->
 
       <Icon />
     </div>
