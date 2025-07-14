@@ -37,7 +37,7 @@ pub fn setup_launcher(app: tauri::AppHandle) {
         return glib::Propagation::Proceed;
     });
 
-    _webview_window.hide().unwrap();
+    // _webview_window.hide().unwrap();
 
     // return (gtk_window, webview_window);
 }
